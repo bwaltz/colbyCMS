@@ -6,7 +6,10 @@ const Header = () => (
         className="navbar navbar-dark fixed-top flex-md-nowrap p-0 shadow"
         style={{ backgroundColor: '#313131' }}
     >
-        <Link className="navbar-brand col-sm-3 col-md-2 mr-0" to="/">
+        <Link
+            className="navbar-brand col-sm-3 col-md-2 mr-0"
+            to="/admin/dashboard"
+        >
             ColbyCMS
         </Link>
         <input

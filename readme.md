@@ -12,3 +12,8 @@ A Laravel CMS for Colby College.
 6. Run webpack: `npm run watch`
 7. Serve: `php artisan serve`
 8. Play
+
+## Notable Links
+
+Admin dashboard - "/admin/dashboard"
+
