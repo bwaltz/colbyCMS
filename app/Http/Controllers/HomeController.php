@@ -23,12 +23,15 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->user()->hasRole('user')) {
-            return redirect('/');
-        }
+        $user = $request->user();
 
-        if ($request->user()->hasRole('admin')){
+        $roles = $user->getRoleNames()->toArray();
+        // dd($roles);
+
+        if (in_array('superAdmin', $roles) || in_array('admin', $roles) || in_array('editor', $roles) || in_array('author', $roles)) {
             return redirect('/admin/dashboard');
+        } else {
+            return redirect('/');
         }
     }
 }

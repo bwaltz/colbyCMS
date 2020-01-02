@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,4 +40,12 @@ Route::get(
 )->where('slug', '^(?!admin).+$');
 
 // admin routes
-Route::get('/admin/{any}', 'AdminController@index')->where('any', '.*');
+Route::get(
+    '/admin/logout', function () {
+        Session::flush();
+        Auth::logout();
+        return Redirect::to("/login")
+        ->with('message', array('type' => 'success', 'text' => 'You have successfully logged out'));
+    }
+);
+Route::get('/admin/{any}', 'AdminController@index')->where('any', '.*')->middleware('role:superAdmin|admin|editor|author');

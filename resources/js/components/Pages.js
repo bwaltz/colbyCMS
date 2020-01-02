@@ -20,6 +20,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import Modal from 'react-modal';
 
 const ColbyCMS = window.colbyCMS;
+import _findIndex from 'lodash/findIndex';
 
 export default class Pages extends Component {
     constructor(props) {
@@ -147,16 +148,24 @@ export default class Pages extends Component {
                         style={{ paddingTop: '75px' }}
                     >
                         <h1>Pages</h1>
-                        <div
-                            style={{ textAlign: 'right', marginBottom: '20px' }}
-                        >
-                            <button
-                                className="btn btn-primary"
-                                onClick={this.openModal}
+                        {_findIndex(
+                            ColbyCMS.currentUser.permissions,
+                            o => o.name === 'admin.view.pages'
+                        ) >= 0 && (
+                            <div
+                                style={{
+                                    textAlign: 'right',
+                                    marginBottom: '20px',
+                                }}
                             >
-                                Add Page
-                            </button>
-                        </div>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={this.openModal}
+                                >
+                                    Add Page
+                                </button>
+                            </div>
+                        )}
                         {this.state.pages.length === 0 && (
                             <div>No pages found</div>
                         )}

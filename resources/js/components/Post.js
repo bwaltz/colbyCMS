@@ -25,6 +25,7 @@ import ReactDiffViewer from 'react-diff-viewer';
 import MediaLibrary from './MediaLibrary';
 
 const Laravel = window.Laravel;
+const ColbyCMS = window.colbyCMS;
 
 export default class Posts extends Component {
     constructor(props) {

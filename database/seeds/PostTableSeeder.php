@@ -13,7 +13,7 @@ class PostTableSeeder extends Seeder
     public function run()
     {
         $post = new Post;
-        $post->user_id = 2;
+        $post->user_id = 1;
         $post->title = "Post 1";
         $post->slug = "2019/12/11/post-1";
         $post->body = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam facilisis, risus at malesuada viverra, arcu libero mollis mauris, vitae blandit orci mi sit amet augue. Nam nec mi eget diam viverra semper sit amet id eros. Donec eu venenatis odio. Etiam leo orci, mollis a est et, dignissim condimentum nibh. Aliquam ac euismod arcu. Ut a erat ac arcu malesuada faucibus. Aliquam erat volutpat. Curabitur nec bibendum ligula, ac suscipit urna.</p>
@@ -21,7 +21,7 @@ class PostTableSeeder extends Seeder
         $post->save();
 
         $post = new Post;
-        $post->user_id = 2;
+        $post->user_id = 1;
         $post->title = "Post 2";
         $post->slug = "2019/12/11/post-2";
         $post->body = "<p>Sed elementum purus nec nunc tempor, non convallis eros sagittis. Morbi bibendum magna a lectus sagittis placerat. Nullam pretium augue in hendrerit pulvinar. Sed vel lacus ac quam molestie molestie. Quisque ullamcorper turpis eget nisl consequat sollicitudin. Aliquam et erat tincidunt, posuere magna nec, bibendum augue. Quisque sagittis, mi at suscipit tempor, lectus metus interdum est, quis sollicitudin magna leo scelerisque justo.</p>";

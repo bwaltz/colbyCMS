@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('1234');
         $user->super_admin = 1;
         $user->save();
-        $user->roles()->attach(Role::where('name', 'admin')->first());
+        $user->assignRole('superAdmin');
         
         $user = new User;
         $user->name = 'testAdmin';
@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
         $user->save();
-        $user->roles()->attach(Role::where('name', 'admin')->first());
+        $user->assignRole('admin');
         
         $user = new User;
         $user->name = 'testEditor';
@@ -34,7 +34,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
         $user->save();
-        $user->roles()->attach(Role::where('name', 'editor')->first());
+        $user->assignRole('editor');
         
         $user = new User;
         $user->name = 'testAuthor';
@@ -42,15 +42,23 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
         $user->save();
-        $user->roles()->attach(Role::where('name', 'author')->first());
+        $user->assignRole('author');
         
         $user = new User;
-        $user->name = 'testUser';
-        $user->email = 'testuser@test.com';
+        $user->name = 'testStudent';
+        $user->email = 'teststudent@test.com';
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
         $user->save();
-        $user->roles()->attach(Role::where('name', 'user')->first());
+        $user->assignRole('student');
+
+        $user = new User;
+        $user->name = 'testAlumni';
+        $user->email = 'testalumni@test.com';
+        $user->password = bcrypt('1234');
+        $user->super_admin = 0;
+        $user->save();
+        $user->assignRole('alumni');
 
     }
 }

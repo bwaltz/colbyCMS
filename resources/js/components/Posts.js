@@ -18,6 +18,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 import Modal from 'react-modal';
 
 const ColbyCMS = window.colbyCMS;
+import _findIndex from 'lodash/findIndex';
 
 export default class Posts extends Component {
     constructor(props) {
@@ -148,16 +149,24 @@ export default class Posts extends Component {
                         style={{ paddingTop: '75px' }}
                     >
                         <h1>Posts</h1>
-                        <div
-                            style={{ textAlign: 'right', marginBottom: '20px' }}
-                        >
-                            <button
-                                className="btn btn-primary"
-                                onClick={this.openModal}
+                        {_findIndex(
+                            ColbyCMS.currentUser.permissions,
+                            o => o.name === 'admin.create.posts'
+                        ) >= 0 && (
+                            <div
+                                style={{
+                                    textAlign: 'right',
+                                    marginBottom: '20px',
+                                }}
                             >
-                                Add Post
-                            </button>
-                        </div>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={this.openModal}
+                                >
+                                    Add Post
+                                </button>
+                            </div>
+                        )}
                         <table className="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -304,10 +313,10 @@ export default class Posts extends Component {
                                                         viewBox="0 0 24 24"
                                                         fill="none"
                                                         stroke="currentColor"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        class="feather feather-copy"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        className="feather feather-copy"
                                                     >
                                                         <rect
                                                             x="9"

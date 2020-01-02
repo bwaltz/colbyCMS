@@ -1,4 +1,8 @@
 <!-- File: ./resources/views/admin/dashboard.blade.php -->
+<?php 
+$user = auth()->user();
+?>
+
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -7,6 +11,12 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script> window.Laravel = { csrfToken: '{{csrf_token()}}' } </script>
+        <script>
+            window.colbyCMS = {
+                currentUser: {!! json_encode($user) !!}
+            }
+            window.colbyCMS.currentUser.permissions = {!! json_encode($user->getAllPermissions()) !!}
+        </script>
         <title> Welcome to the Admin dashboard </title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <style>
@@ -118,11 +128,6 @@
                 }
 
             </style>
-            <script>
-                window.colbyCMS = {
-                    currentUser: {!! json_encode(auth()->user()) !!}
-                }
-            </script>
     </head>
     <body>
         <div id="cms-admin"></div>

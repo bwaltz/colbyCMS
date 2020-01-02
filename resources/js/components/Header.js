@@ -20,7 +20,7 @@ const Header = () => (
         />
         <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="/admin/logout">
                     Sign out
                 </a>
             </li>
