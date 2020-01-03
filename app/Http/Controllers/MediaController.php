@@ -22,10 +22,8 @@ class MediaController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->file('files'));
         $returnFiles = [];
         foreach($request->file('files') as $file) {
-            // dd($file);
             $media = MediaUploader::fromSource($file->path())->toDirectory('uploads')->upload();
             $returnFiles[] = ['link' => '/storage/uploads/'.$media->filename.'.'.$media->extension];
         }

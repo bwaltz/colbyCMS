@@ -19,12 +19,19 @@ Route::middleware('auth:api')->get(
     }
 );
 
+// posts
 Route::apiResource('posts', 'PostController');
-Route::apiResource('pages', 'PageController');
 Route::get('post/revisions/{post}', 'PostController@getRevisions');
 Route::post('post/attachMedia/{post}', 'PostController@attachMedia');
+
+Route::get('postsForUser/{user}', 'PostController@getPostsForUser');
+
+
+// pages
+Route::apiResource('pages', 'PageController');
 Route::get('page/revisions/{page}', 'PageController@getRevisions');
 
+// media
 Route::get('media', 'MediaController@index');
 Route::post('media', 'MediaController@store');
 Route::post('media/{media}', 'MediaController@show');

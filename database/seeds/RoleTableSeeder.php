@@ -10,11 +10,15 @@ class RoleTableSeeder extends Seeder
 
     protected $permissions = [
         "admin.view.posts",
+        "admin.view.own.posts",
+        "admin.view.other.posts",
         "admin.edit.other.posts",
         "admin.edit.own.posts",
+        "admin.delete.own.posts",
+        "admin.delete.other.posts",
+        "admin.delete.posts", // <--fix this
         "admin.create.posts",
         "admin.duplicate.posts",
-        "admin.delete.posts",
         "admin.publish.posts",
         "admin.archive.posts",
         "admin.view.post.revisions",
@@ -48,7 +52,8 @@ class RoleTableSeeder extends Seeder
         "student.create.comment",
         "student.edit.comment",
         "student.view.alumni.posts",
-        "student.view.alumni.pages"
+        "student.view.alumni.pages",
+        "student.delete.own.posts",
     ];
 
     /**
@@ -73,11 +78,15 @@ class RoleTableSeeder extends Seeder
 
         $roleAdmin->givePermissionTo(
             ["admin.view.posts",
+            "admin.view.own.posts",
+            "admin.view.other.posts",
             "admin.edit.other.posts",
             "admin.edit.own.posts",
+            "admin.delete.posts",
             "admin.create.posts",
             "admin.duplicate.posts",
-            "admin.delete.posts",
+            "admin.delete.own.posts",
+            "admin.delete.other.posts",
             "admin.publish.posts",
             "admin.archive.posts",
             "admin.view.post.revisions",
@@ -111,11 +120,14 @@ class RoleTableSeeder extends Seeder
         
         $roleEditor->givePermissionTo(
             ["admin.view.posts",
+            "admin.view.own.posts",
+            "admin.view.other.posts",
             "admin.edit.other.posts",
             "admin.edit.own.posts",
             "admin.create.posts",
             "admin.duplicate.posts",
-            "admin.delete.posts",
+            "admin.delete.own.posts",
+            "admin.delete.other.posts",
             "admin.publish.posts",
             "admin.archive.posts",
             "admin.view.post.revisions",
@@ -138,7 +150,9 @@ class RoleTableSeeder extends Seeder
 
         $roleAuthor->givePermissionTo(
             ["admin.view.posts",
+            "admin.view.own.posts",
             "admin.edit.own.posts",
+            "admin.delete.own.posts",
             "admin.create.posts",
             "admin.duplicate.posts",
             "admin.view.post.revisions",
@@ -161,6 +175,7 @@ class RoleTableSeeder extends Seeder
             "student.view.posts",
             "student.create.posts",
             "student.edit.own.posts",
+            "student.delete.own.posts",
             "student.edit.other.posts",
             "student.view.pages",
             "student.create.comment",
@@ -171,6 +186,7 @@ class RoleTableSeeder extends Seeder
             [
             "student.view.posts",
             "student.create.posts",
+            "student.delete.own.posts",
             "student.edit.own.posts",
             "student.edit.other.posts",
             "student.view.pages",

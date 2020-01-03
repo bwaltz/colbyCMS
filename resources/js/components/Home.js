@@ -2,6 +2,7 @@ import React from 'react';
 import Menu from './Menu.js';
 
 const ColbyCMS = window.colbyCMS;
+import _findIndex from 'lodash/findIndex';
 
 const Home = () => (
     <div className="container-fluid">
@@ -71,6 +72,25 @@ const Home = () => (
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="row" style={{ marginTop: '20px' }}>
+                    {_findIndex(
+                        ColbyCMS.currentUser.permissions,
+                        o => o.name === 'admin.add.dashboard.cards'
+                    ) >= 0 && (
+                        <div className="col-md-4">
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    backgroundColor: '#ddd',
+                                    padding: '4em',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                + ADD
+                            </div>
+                        </div>
+                    )}
                 </div>
             </main>
         </div>

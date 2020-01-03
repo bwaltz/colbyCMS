@@ -3,21 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\Request;
+
 use App\Http\Resources\PostResource;
 use Plank\Mediable\Media;
 
+use Carbon\Carbon;
+
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($filter = null)
     {
-        // retrieve JSON formatted collection of all of the stored posts
-        return PostResource::collection(Post::latest()->paginate(5));
+        if ($filter) { 
+            if ($filter['user_id']) {
+                return PostResource::collection(Post::where('user_id', $filter['user_id'])->paginate(5));
+            }
+        } else {
+            return PostResource::collection(Post::latest()->paginate(5));
+        }
     }
 
     /**
@@ -43,7 +53,7 @@ class PostController extends Controller
             'title' => 'required',
             'body' => 'required',
             'user_id' => 'required',            
-            'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
+            // 'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
             ]
         );
 
@@ -57,6 +67,13 @@ class PostController extends Controller
         //     $image->move($destinationPath, $name);
         //     $post->image = $name;
         // }
+
+        $now = Carbon::now();
+        $day = $nowFormatted = $now->day;
+        $month = $now->month;
+        $year = $now->year;
+        $titleFormatted = str_replace(' ', '', strtolower($request->title));
+        $post->slug = $year."/".$month."/".$day."/".$titleFormatted;
 
         $post->user_id = $request->user_id;
         $post->title = $request->title;
@@ -140,9 +157,8 @@ class PostController extends Controller
 
     public function single($slug = null)
     {
-        
         $post = Post::where('slug', $slug)->get()->first();
-        // dd($post);
+
         if (!$post) {
             return abort(404);
         }
@@ -161,9 +177,22 @@ class PostController extends Controller
     
     public function attachMedia(Request $request, Post $post)
     {
-        // $media = Media::whereBasename($request->file);
-        // dd($media);
         $post->attachMedia($request->file, 'featured_image');
         return response()->json($post->revisionHistory->toArray());
+    }
+
+    public function getPostsForUser(User $user)
+    {
+        $permissions = $user->getAllPermissions()->pluck('name')->toArray();
+        if (!in_array('admin.view.posts', $permissions)) {
+            return abort(403);
+        }
+
+        if (in_array('admin.view.other.posts', $permissions)) {
+            return $this->index(null);
+        } else {
+            return $this->index([ 'user_id' => $user->id ]);
+        }
+    
     }
 }

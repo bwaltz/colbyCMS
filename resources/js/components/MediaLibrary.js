@@ -263,6 +263,8 @@ export default class MediaLibrary extends Component {
                                                             '.' +
                                                             m.extension}
                                                     </div>
+                                                </div>
+                                                <div className="card-footer">
                                                     <div>
                                                         {!this.props.isPost && (
                                                             <>
