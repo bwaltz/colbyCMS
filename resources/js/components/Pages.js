@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Menu from './Menu';
-import Axios from 'axios';
-import { Link } from 'react-router-dom';
-import './style.scss';
+import React, { Component } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Menu from "./Menu";
+import Axios from "axios";
+import { Link } from "react-router-dom";
+import "./style.scss";
 
 // Require Editor JS files.
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/js/plugins.pkgd.min.js';
+import "froala-editor/js/froala_editor.pkgd.min.js";
+import "froala-editor/js/plugins.pkgd.min.js";
 
 // Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import "froala-editor/css/froala_style.min.css";
+import "froala-editor/css/froala_editor.pkgd.min.css";
 
 // Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
-import FroalaEditor from 'react-froala-wysiwyg';
+import "font-awesome/css/font-awesome.css";
+import FroalaEditor from "react-froala-wysiwyg";
 
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
 const ColbyCMS = window.colbyCMS;
-import _findIndex from 'lodash/findIndex';
+import _findIndex from "lodash/findIndex";
 
 export default class Pages extends Component {
     constructor(props) {
@@ -29,10 +29,10 @@ export default class Pages extends Component {
             pages: [],
             modalIsOpen: false,
             page: {
-                title: '',
-                body: '',
-                slug: '',
-            },
+                title: "",
+                body: "",
+                slug: ""
+            }
         };
 
         this.getPages = this.getPages.bind(this);
@@ -51,30 +51,30 @@ export default class Pages extends Component {
 
     openModal() {
         this.setState({
-            modalIsOpen: true,
+            modalIsOpen: true
         });
     }
 
     closeModal() {
         this.setState({
-            modalIsOpen: false,
+            modalIsOpen: false
         });
     }
 
     createPage(published = false) {
         let addendedPost = Object.assign(this.state.page, {
             user_id: ColbyCMS.currentUser.id,
-            published,
+            published
         });
 
-        axios.post('/api/pages', addendedPost).then(response => {
+        axios.post("/api/pages", addendedPost).then(response => {
             this.setState({
                 modalIsOpen: false,
                 page: {
-                    title: '',
-                    body: '',
-                    slug: '',
-                },
+                    title: "",
+                    body: "",
+                    slug: ""
+                }
             });
             this.getPages();
         });
@@ -84,15 +84,15 @@ export default class Pages extends Component {
         this.setState({
             page: {
                 ...this.state.page,
-                body: model,
-            },
+                body: model
+            }
         });
     }
 
     getPages() {
-        axios.get('/api/pages').then(response => {
+        axios.get("/api/pages").then(response => {
             this.setState({
-                pages: response.data.data,
+                pages: response.data.data
             });
         });
     }
@@ -102,7 +102,7 @@ export default class Pages extends Component {
             this.setState({
                 pages: response.data.data,
                 prev: response.data.links.prev,
-                next: response.data.links.next,
+                next: response.data.links.next
             });
         });
     }
@@ -112,8 +112,8 @@ export default class Pages extends Component {
             ...this.state,
             page: {
                 ...this.state.page,
-                title: event.target.value,
-            },
+                title: event.target.value
+            }
         });
     }
 
@@ -122,21 +122,21 @@ export default class Pages extends Component {
             ...this.state,
             page: {
                 ...this.state.page,
-                slug: event.target.value,
-            },
+                slug: event.target.value
+            }
         });
     }
 
     render() {
         const customStyles = {
             content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)',
-            },
+                top: "50%",
+                left: "50%",
+                right: "auto",
+                bottom: "auto",
+                marginRight: "-50%",
+                transform: "translate(-50%, -50%)"
+            }
         };
         return (
             <div className="container-fluid">
@@ -145,17 +145,17 @@ export default class Pages extends Component {
                     <main
                         role="main"
                         className="col-md-9 ml-sm-auto col-lg-10 px-4"
-                        style={{ paddingTop: '75px' }}
+                        style={{ paddingTop: "75px" }}
                     >
                         <h1>Pages</h1>
                         {_findIndex(
                             ColbyCMS.currentUser.permissions,
-                            o => o.name === 'admin.view.pages'
+                            o => o.name === "admin.view.pages"
                         ) >= 0 && (
                             <div
                                 style={{
-                                    textAlign: 'right',
-                                    marginBottom: '20px',
+                                    textAlign: "right",
+                                    marginBottom: "20px"
                                 }}
                             >
                                 <button
@@ -175,25 +175,31 @@ export default class Pages extends Component {
                                     <tr>
                                         <th
                                             scope="col"
-                                            style={{ width: '40%' }}
+                                            style={{ width: "30%" }}
                                         >
                                             Title
                                         </th>
                                         <th
                                             scope="col"
-                                            style={{ width: '10%' }}
+                                            style={{ width: "10%" }}
                                         >
                                             Author
                                         </th>
                                         <th
                                             scope="col"
-                                            style={{ width: '10%' }}
+                                            style={{ width: "10%" }}
                                         >
                                             Published
                                         </th>
                                         <th
                                             scope="col"
-                                            style={{ width: '10%' }}
+                                            style={{ width: "10%" }}
+                                        >
+                                            Slug
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            style={{ width: "10%" }}
                                         >
                                             Actions
                                         </th>
@@ -219,6 +225,7 @@ export default class Pages extends Component {
                                                         <span>false</span>
                                                     )}
                                                 </td>
+                                                <td>{`/${page.slug}`}</td>
                                                 <td>
                                                     <button
                                                         className="btn btn-sm btn-primary"
@@ -226,7 +233,7 @@ export default class Pages extends Component {
                                                         data-placement="top"
                                                         title="Preview"
                                                         style={{
-                                                            marginRight: '5px',
+                                                            marginRight: "5px"
                                                         }}
                                                     >
                                                         <svg
@@ -255,7 +262,7 @@ export default class Pages extends Component {
                                                         data-placement="top"
                                                         title="Archive"
                                                         style={{
-                                                            marginRight: '5px',
+                                                            marginRight: "5px"
                                                         }}
                                                     >
                                                         <svg
@@ -295,7 +302,7 @@ export default class Pages extends Component {
                                                         data-placement="top"
                                                         title="Delete"
                                                         style={{
-                                                            marginRight: '5px',
+                                                            marginRight: "5px"
                                                         }}
                                                     >
                                                         <svg
@@ -392,7 +399,7 @@ export default class Pages extends Component {
                                     </div>
                                 </form>
                             </div>
-                            <div style={{ textAlign: 'right' }}>
+                            <div style={{ textAlign: "right" }}>
                                 <button
                                     className="btn btn-link"
                                     onClick={this.closeModal}
@@ -401,7 +408,7 @@ export default class Pages extends Component {
                                 </button>
                                 <button
                                     className="btn btn-primary"
-                                    style={{ marginRight: '7px' }}
+                                    style={{ marginRight: "7px" }}
                                     onClick={this.createPage}
                                 >
                                     Save &amp; Close

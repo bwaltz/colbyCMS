@@ -120,16 +120,6 @@ export default class Posts extends Component {
         });
     }
 
-    // handleSlugChange(event) {
-    //     this.setState({
-    //         ...this.state,
-    //         post: {
-    //             ...this.state.post,
-    //             slug: event.target.value,
-    //         },
-    //     });
-    // }
-
     render() {
         console.log(this.state);
         const customStyles = {
@@ -179,7 +169,7 @@ export default class Posts extends Component {
                                     <tr>
                                         <th
                                             scope="col"
-                                            style={{ width: "40%" }}
+                                            style={{ width: "30%" }}
                                         >
                                             Title
                                         </th>
@@ -194,6 +184,12 @@ export default class Posts extends Component {
                                             style={{ width: "10%" }}
                                         >
                                             Published
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            style={{ width: "10%" }}
+                                        >
+                                            Slug
                                         </th>
                                         <th
                                             scope="col"
@@ -223,6 +219,7 @@ export default class Posts extends Component {
                                                         <span>false</span>
                                                     )}
                                                 </td>
+                                                <td>{`/${post.slug}`}</td>
                                                 <td>
                                                     <button
                                                         className="btn btn-sm btn-primary"
@@ -298,35 +295,6 @@ export default class Posts extends Component {
                                                             </svg>
                                                         </button>
                                                     )}
-                                                    <button
-                                                        className="btn btn-sm btn-danger"
-                                                        onClick={this.deletePost.bind(
-                                                            null,
-                                                            post.id
-                                                        )}
-                                                        data-toggle="tooltip"
-                                                        data-placement="top"
-                                                        title="Duplicate"
-                                                        style={{
-                                                            marginRight: "5px"
-                                                        }}
-                                                    >
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="feather feather-trash"
-                                                        >
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                        </svg>
-                                                    </button>
                                                     {_findIndex(
                                                         ColbyCMS.currentUser
                                                             .permissions,
@@ -339,7 +307,11 @@ export default class Posts extends Component {
                                                             onClick={() => {}}
                                                             data-toggle="tooltip"
                                                             data-placement="top"
-                                                            title="Delete"
+                                                            title="Duplicate"
+                                                            style={{
+                                                                marginRight:
+                                                                    "5px"
+                                                            }}
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -365,6 +337,35 @@ export default class Posts extends Component {
                                                             </svg>
                                                         </button>
                                                     )}
+                                                    <button
+                                                        className="btn btn-sm btn-danger"
+                                                        onClick={this.deletePost.bind(
+                                                            null,
+                                                            post.id
+                                                        )}
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="Delete"
+                                                        style={{
+                                                            marginRight: "5px"
+                                                        }}
+                                                    >
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="24"
+                                                            height="24"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            className="feather feather-trash"
+                                                        >
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                        </svg>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         );
