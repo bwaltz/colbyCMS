@@ -35,3 +35,6 @@ Route::get('page/revisions/{page}', 'PageController@getRevisions');
 Route::get('media', 'MediaController@index');
 Route::post('media', 'MediaController@store');
 Route::post('media/{media}', 'MediaController@show');
+
+// groups
+Route::apiResource('groups', 'GroupController');

@@ -25,6 +25,7 @@ class PostResource extends JsonResource
             'updated_at' => (string) $this->updated_at,
             'revisions' => $this->revisionHistory,
             'user' => $this->user,
+            'groups' => $this->groups,
         ];
     }
 }

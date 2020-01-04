@@ -23,8 +23,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'PostController@all');
 Route::get('/post/{slug}', 'PostController@single')->where('slug', '.*');
-Route::get('/preview/post/{post}', 'PostController@preview');
-Route::get('/preview/page/{page}', 'PageController@preview');
+Route::get('/preview/post/{post}', 'PostController@preview')->middleware('role:superAdmin|admin|editor|author');
+Route::get('/preview/page/{page}', 'PageController@preview')->middleware('role:superAdmin|admin|editor|author');
 Route::post('/upload', 'MediaController@upload');
 
 Route::get(

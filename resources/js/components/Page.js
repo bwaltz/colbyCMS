@@ -1,26 +1,29 @@
-import React, { Component } from 'react';
-import Menu from './Menu';
+import React, { Component } from "react";
+import Menu from "./Menu";
 // import Axios from 'axios';
-import { Link } from 'react-router-dom';
-import Toggle from 'react-toggle';
-import 'react-toggle/style.css';
+import { Link } from "react-router-dom";
+import Toggle from "react-toggle";
+import "react-toggle/style.css";
+import _xorBy from "lodash/xorBy";
+import _remove from "lodash/remove";
 
 // Require Editor JS files.
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/js/plugins.pkgd.min.js';
+import "froala-editor/js/froala_editor.pkgd.min.js";
+import "froala-editor/js/plugins.pkgd.min.js";
 
 // Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import "froala-editor/css/froala_style.min.css";
+import "froala-editor/css/froala_editor.pkgd.min.css";
 
 // Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
-import FroalaEditor from 'react-froala-wysiwyg';
+import "font-awesome/css/font-awesome.css";
+import FroalaEditor from "react-froala-wysiwyg";
 
-import './style.scss';
+import "./style.scss";
 
-import Modal from 'react-modal';
-import ReactDiffViewer from 'react-diff-viewer';
+import Modal from "react-modal";
+import ReactDiffViewer from "react-diff-viewer";
+import Autosuggest from "react-autosuggest";
 
 export default class Pages extends Component {
     constructor(props) {
@@ -31,6 +34,9 @@ export default class Pages extends Component {
             modalIsOpen: false,
             revisionOpen: 0,
             slugRevealed: false,
+            suggestions: [],
+            filter: "",
+            groups: []
         };
 
         this.getPage = this.getPage.bind(this);
@@ -38,15 +44,21 @@ export default class Pages extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.updatePage = this.updatePage.bind(this);
         this.handleModelChange = this.handleModelChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handlePublishedChange = this.handlePublishedChange.bind(this);
         this.setOpenRevision = this.setOpenRevision.bind(this);
         this.revealSlug = this.revealSlug.bind(this);
         this.disableSlug = this.disableSlug.bind(this);
         this.onSlugChange = this.onSlugChange.bind(this);
+
+        this.removeGroup = this.removeGroup.bind(this);
+        this.getSuggestions = this.getSuggestions.bind(this);
+        this.onSuggestionSelect = this.onSuggestionSelect.bind(this);
     }
 
     componentDidMount() {
         this.getPage();
+        this.getGroups();
     }
 
     getPage() {
@@ -54,7 +66,7 @@ export default class Pages extends Component {
         axios.get(`/api/pages/${pageId}`).then(response => {
             this.setState({
                 page: response.data.data,
-                loading: false,
+                loading: false
             });
         });
     }
@@ -63,8 +75,8 @@ export default class Pages extends Component {
         this.setState({
             page: {
                 ...this.state.page,
-                body: model,
-            },
+                body: model
+            }
         });
     }
 
@@ -72,8 +84,8 @@ export default class Pages extends Component {
         this.setState({
             page: {
                 ...this.state.page,
-                published: !this.state.page.published,
-            },
+                published: !this.state.page.published
+            }
         });
     }
 
@@ -82,38 +94,38 @@ export default class Pages extends Component {
             .put(`/api/pages/${this.props.match.params.id}`, this.state.page)
             .then(response => {
                 this.setState({
-                    page: response.data.data,
+                    page: response.data.data
                 });
             });
     }
 
     openModal() {
         this.setState({
-            modalIsOpen: true,
+            modalIsOpen: true
         });
     }
 
     closeModal() {
         this.setState({
-            modalIsOpen: false,
+            modalIsOpen: false
         });
     }
 
     setOpenRevision(id) {
         this.setState({
-            revisionOpen: id,
+            revisionOpen: id
         });
     }
 
     revealSlug() {
         this.setState({
-            slugRevealed: true,
+            slugRevealed: true
         });
     }
 
     disableSlug() {
         this.setState({
-            slugRevealed: false,
+            slugRevealed: false
         });
     }
 
@@ -121,21 +133,83 @@ export default class Pages extends Component {
         this.setState({
             page: {
                 ...this.state.page,
-                slug: event.target.value,
-            },
+                slug: event.target.value
+            }
+        });
+    }
+
+    handleTitleChange(event) {
+        this.setState({
+            ...this.state,
+            page: {
+                ...this.state.page,
+                title: event.target.value
+            }
+        });
+    }
+
+    getGroups() {
+        const postId = this.props.match.params.id;
+        axios.get("/api/groups").then(response => {
+            this.setState({
+                groups: response.data.data,
+                loading: false
+            });
+        });
+    }
+
+    getSuggestions(value) {
+        const { groups } = this.state;
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0
+            ? []
+            : _xorBy(this.state.page.groups, groups, "name").filter(group =>
+                  group.name.toLowerCase().includes(inputValue)
+              );
+    }
+
+    onSuggestionSelect(event, { suggestionValue }) {
+        const { groups, page } = this.state;
+        const groupObj = groups.find(g => g.name === suggestionValue);
+        let newGroups = [];
+        if (page.groups) {
+            newGroups = [...this.state.page.groups, groupObj];
+        } else {
+            newGroups.push(groupObj);
+        }
+        this.setState({
+            filter: "",
+            page: {
+                ...this.state.page,
+                groups: newGroups
+            }
+        });
+    }
+
+    removeGroup(id) {
+        const groups = this.state.page.groups;
+        _remove(groups, g => g.id === id);
+
+        this.setState({
+            post: {
+                ...this.state.page,
+                groups
+            }
         });
     }
 
     render() {
         const customStyles = {
             content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)',
-            },
+                top: "50%",
+                left: "50%",
+                right: "auto",
+                bottom: "auto",
+                marginRight: "-50%",
+                transform: "translate(-50%, -50%)"
+            }
         };
 
         console.log(this.state);
@@ -147,7 +221,7 @@ export default class Pages extends Component {
                     <main
                         role="main"
                         className="col-md-9 ml-sm-auto col-lg-10 px-4"
-                        style={{ paddingTop: '75px' }}
+                        style={{ paddingTop: "75px" }}
                     >
                         <div className="row">
                             <div className="col-sm-9">
@@ -158,6 +232,7 @@ export default class Pages extends Component {
                                             id="title"
                                             className="form-control"
                                             value={this.state.page.title}
+                                            onChange={this.handleTitleChange}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -175,24 +250,24 @@ export default class Pages extends Component {
                             <div className="col-sm-3">
                                 <div
                                     style={{
-                                        boxShadow: '0 1px 1px rgba(0,0,0,.04)',
-                                        border: '1px solid #e5e5e5',
-                                        background: '#fff',
-                                        marginBottom: '20px',
+                                        boxShadow: "0 1px 1px rgba(0,0,0,.04)",
+                                        border: "1px solid #e5e5e5",
+                                        background: "#fff",
+                                        marginBottom: "20px"
                                     }}
                                 >
                                     <div
                                         style={{
-                                            borderBottom: '1px solid #eee',
-                                            padding: '10px',
-                                            fontSize: ' 1.5em',
+                                            borderBottom: "1px solid #eee",
+                                            padding: "10px",
+                                            fontSize: " 1.5em"
                                         }}
                                     >
                                         Page Info
                                     </div>
-                                    <div style={{ padding: '10px' }}>
+                                    <div style={{ padding: "10px" }}>
                                         <div>
-                                            Published:{' '}
+                                            Published:{" "}
                                             <Toggle
                                                 className="published-toggle"
                                                 defaultChecked={
@@ -205,7 +280,7 @@ export default class Pages extends Component {
                                             />
                                         </div>
                                         <div>
-                                            Revisions:{' '}
+                                            Revisions:{" "}
                                             {this.state.loading && (
                                                 <span>loading...</span>
                                             )}
@@ -213,10 +288,10 @@ export default class Pages extends Component {
                                                 <a
                                                     onClick={this.openModal}
                                                     style={{
-                                                        cursor: 'pointer',
-                                                        color: '#007bff',
+                                                        cursor: "pointer",
+                                                        color: "#007bff",
                                                         textDecoration:
-                                                            'underline',
+                                                            "underline"
                                                     }}
                                                 >
                                                     {
@@ -227,15 +302,15 @@ export default class Pages extends Component {
                                             )}
                                         </div>
                                         <div>
-                                            Slug:{' '}
+                                            Slug:{" "}
                                             {!this.state.slugRevealed && (
                                                 <a
                                                     onClick={this.revealSlug}
                                                     style={{
-                                                        cursor: 'pointer',
-                                                        color: '#007bff',
+                                                        cursor: "pointer",
+                                                        color: "#007bff",
                                                         textDecoration:
-                                                            'underline',
+                                                            "underline"
                                                     }}
                                                 >
                                                     {this.state.page.slug}
@@ -243,21 +318,18 @@ export default class Pages extends Component {
                                             )}
                                             {this.state.slugRevealed && (
                                                 <span>
-                                                    page/
                                                     <input
                                                         id="title"
                                                         onChange={
                                                             this.onSlugChange
                                                         }
-                                                        value={this.state.page.slug.substring(
-                                                            5,
+                                                        value={
                                                             this.state.page.slug
-                                                                .length
-                                                        )}
+                                                        }
                                                     />
                                                     <button
                                                         className="btn btn-sm"
-                                                        style={{ color: 'red' }}
+                                                        style={{ color: "red" }}
                                                         onClick={
                                                             this.disableSlug
                                                         }
@@ -294,14 +366,14 @@ export default class Pages extends Component {
                                     </div>
                                     <div
                                         style={{
-                                            background: '#f5f5f5',
-                                            borderTop: '1px solid #ddd',
-                                            padding: '10px',
+                                            background: "#f5f5f5",
+                                            borderTop: "1px solid #ddd",
+                                            padding: "10px"
                                         }}
                                     >
                                         <Link
                                             className="btn btn-link"
-                                            style={{ marginRight: '5px' }}
+                                            style={{ marginRight: "5px" }}
                                             to={`/preview/page/${pageId}`}
                                             target="_blank"
                                         >
@@ -309,7 +381,7 @@ export default class Pages extends Component {
                                         </Link>
                                         <button
                                             className="btn btn-secondary"
-                                            style={{ marginRight: '5px' }}
+                                            style={{ marginRight: "5px" }}
                                             onClick={this.updatePage}
                                         >
                                             Save Draft
@@ -321,29 +393,29 @@ export default class Pages extends Component {
                                 </div>
                                 <div
                                     style={{
-                                        boxShadow: '0 1px 1px rgba(0,0,0,.04)',
-                                        border: '1px solid #e5e5e5',
-                                        background: '#fff',
-                                        marginBottom: '20px',
+                                        boxShadow: "0 1px 1px rgba(0,0,0,.04)",
+                                        border: "1px solid #e5e5e5",
+                                        background: "#fff",
+                                        marginBottom: "20px"
                                     }}
                                 >
                                     <div
                                         style={{
-                                            borderBottom: '1px solid #eee',
-                                            padding: '10px',
-                                            fontSize: ' 1.5em',
+                                            borderBottom: "1px solid #eee",
+                                            padding: "10px",
+                                            fontSize: " 1.5em"
                                         }}
                                     >
                                         Featured Image
                                     </div>
-                                    <div style={{ padding: '10px' }}>
+                                    <div style={{ padding: "10px" }}>
                                         <i>No featured image</i>
                                     </div>
                                     <div
                                         style={{
-                                            background: '#f5f5f5',
-                                            borderTop: '1px solid #ddd',
-                                            padding: '10px',
+                                            background: "#f5f5f5",
+                                            borderTop: "1px solid #ddd",
+                                            padding: "10px"
                                         }}
                                     >
                                         <button className="btn btn-primary">
@@ -351,6 +423,166 @@ export default class Pages extends Component {
                                         </button>
                                     </div>
                                 </div>
+                                {!this.state.loading && (
+                                    <div
+                                        style={{
+                                            boxShadow:
+                                                "0 1px 1px rgba(0,0,0,.04)",
+                                            border: "1px solid #e5e5e5",
+                                            background: "#fff",
+                                            marginBottom: "20px"
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                borderBottom: "1px solid #eee",
+                                                padding: "10px",
+                                                fontSize: " 1.5em",
+                                                display: "flex",
+                                                justifyContent: "space-between"
+                                            }}
+                                        >
+                                            <div>Groups</div>
+                                            <div>
+                                                <span class="badge badge-primary">
+                                                    {
+                                                        this.state.page.groups
+                                                            .length
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div style={{ padding: "10px" }}>
+                                            <Autosuggest
+                                                suggestions={
+                                                    this.state.suggestions
+                                                }
+                                                onSuggestionsFetchRequested={({
+                                                    value
+                                                }) => {
+                                                    this.setState({
+                                                        suggestions: this.getSuggestions(
+                                                            value
+                                                        )
+                                                    });
+                                                }}
+                                                onSuggestionsClearRequested={() => {
+                                                    this.setState({
+                                                        suggestions: []
+                                                    });
+                                                }}
+                                                getSuggestionValue={group =>
+                                                    group.name
+                                                }
+                                                renderSuggestion={group => (
+                                                    <div>{group.name}</div>
+                                                )}
+                                                inputProps={{
+                                                    placeholder: "Group name",
+                                                    value: this.state.filter,
+                                                    onChange: (
+                                                        event,
+                                                        { newValue }
+                                                    ) => {
+                                                        this.setState({
+                                                            filter: newValue
+                                                        });
+                                                    }
+                                                }}
+                                                onSuggestionSelected={
+                                                    this.onSuggestionSelect
+                                                }
+                                            />
+                                        </div>
+                                        <div
+                                            style={{
+                                                padding: "10px"
+                                            }}
+                                        >
+                                            {this.state.page.groups.length >
+                                                0 && (
+                                                <table className="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">
+                                                                Name
+                                                            </th>
+                                                            <th scope="col">
+                                                                Action
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.page.groups.map(
+                                                            (group, i) => {
+                                                                return (
+                                                                    <tr key={i}>
+                                                                        <td>
+                                                                            <Link
+                                                                                to={`/admin/posts/${group.id}`}
+                                                                            >
+                                                                                {
+                                                                                    group.name
+                                                                                }
+                                                                            </Link>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button
+                                                                                className="btn btn-sm btn-danger"
+                                                                                onClick={this.removeGroup.bind(
+                                                                                    null,
+                                                                                    group.id
+                                                                                )}
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Delete"
+                                                                            >
+                                                                                <svg
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="24"
+                                                                                    height="24"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"
+                                                                                    className="feather feather-x"
+                                                                                >
+                                                                                    <line
+                                                                                        x1="18"
+                                                                                        y1="6"
+                                                                                        x2="6"
+                                                                                        y2="18"
+                                                                                    ></line>
+                                                                                    <line
+                                                                                        x1="6"
+                                                                                        y1="6"
+                                                                                        x2="18"
+                                                                                        y2="18"
+                                                                                    ></line>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            )}
+                                            {this.state.page.groups.length ===
+                                                0 && (
+                                                <div>
+                                                    <i>
+                                                        Page not restricted to
+                                                        groups
+                                                    </i>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {!this.state.loading && (
@@ -366,8 +598,8 @@ export default class Pages extends Component {
 
                                 <div
                                     style={{
-                                        maxHeight: '600px',
-                                        overflow: 'auto',
+                                        maxHeight: "600px",
+                                        overflow: "auto"
                                     }}
                                 >
                                     <div
@@ -375,7 +607,7 @@ export default class Pages extends Component {
                                         id="accordionExample"
                                     >
                                         {this.state.page.revisions
-                                            .filter(obj => obj.key === 'body')
+                                            .filter(obj => obj.key === "body")
                                             .map((revision, i) => {
                                                 return (
                                                     <div className="card">
@@ -384,11 +616,11 @@ export default class Pages extends Component {
                                                                 className="mb-0"
                                                                 style={{
                                                                     display:
-                                                                        'flex',
+                                                                        "flex",
                                                                     alignItems:
-                                                                        'center',
+                                                                        "center",
                                                                     justifyContent:
-                                                                        'space-between',
+                                                                        "space-between"
                                                                 }}
                                                             >
                                                                 <button
@@ -406,13 +638,13 @@ export default class Pages extends Component {
                                                                 <a
                                                                     style={{
                                                                         cursor:
-                                                                            'pointer',
+                                                                            "pointer",
                                                                         fontSize:
-                                                                            '0.4em',
+                                                                            "0.4em",
                                                                         color:
-                                                                            '#007bff',
+                                                                            "#007bff",
                                                                         textDecoration:
-                                                                            'underline',
+                                                                            "underline"
                                                                     }}
                                                                 >
                                                                     Restore
@@ -424,15 +656,15 @@ export default class Pages extends Component {
                                                                 this.state
                                                                     .revisionOpen ===
                                                                 i
-                                                                    ? 'show'
-                                                                    : ''
+                                                                    ? "show"
+                                                                    : ""
                                                             }`}
                                                         >
                                                             <div
                                                                 className="card-body"
                                                                 style={{
                                                                     display:
-                                                                        'flex',
+                                                                        "flex"
                                                                 }}
                                                             >
                                                                 <ReactDiffViewer
@@ -455,9 +687,9 @@ export default class Pages extends Component {
                                 </div>
                                 <div
                                     style={{
-                                        textAlign: 'end',
-                                        marginTop: '1em',
-                                        cursor: 'pointer',
+                                        textAlign: "end",
+                                        marginTop: "1em",
+                                        cursor: "pointer"
                                     }}
                                 >
                                     <button onClick={this.closeModal}>

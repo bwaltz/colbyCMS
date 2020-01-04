@@ -15,10 +15,15 @@ class Post extends Model
     
 
     protected $revisionCreationsEnabled = true;
-    protected $fillable = ['user_id', 'title', 'body', 'image', 'slug', 'published'];
+    protected $fillable = ['user_id', 'title', 'body', 'image', 'slug', 'published', 'groups'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group', 'group_post', 'group_id', 'post_id');
     }
 }

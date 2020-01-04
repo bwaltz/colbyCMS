@@ -3,6 +3,11 @@
 
     @section('content')
     <div class="container">
+    <div class="row" style="margin-top: 20px">
+    <div class="col-lg-12"><div class="alert alert-warning" role="alert" style="text-align: center">
+  Preview
+</div></div>
+</div>
       <div class="row">
         <div class="col-lg-10 mx-auto">
           <h3 class="mt-4">{{ $post->title }} <span class="lead"> by <a href="#"> {{ $post->user->name }} </a></span> </h3>

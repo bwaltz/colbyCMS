@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Page;
 use Illuminate\Http\Request;
 use App\Http\Resources\PageResource;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -62,7 +63,9 @@ class PageController extends Controller
         $page->title = $request->title;
         $page->body = $request->body;
         $page->slug = $request->slug;
+        $page->groups()->sync(array_column($request->groups, 'id'));
         $page->save();
+        
 
         return new PageResource($page);
     }
@@ -109,6 +112,8 @@ class PageController extends Controller
             ]
         );
         $page->update($request->only(['title', 'body', 'slug', 'published']));
+        $page->groups()->sync(array_column($request->groups, 'id'));
+        $page->save();
 
         return new PageResource($page);
     }
@@ -134,25 +139,71 @@ class PageController extends Controller
         );
     }
 
-    public function single($slug = null)
-    {
-        $page = Page::where('slug', $slug)->get()->first();
-        if (!$page) {
-            return abort(404);
-        }
-        return view('single', compact('page'));
-    }
+    // public function single($slug = null)
+    // {
+    //     $page = Page::where('slug', $slug)->get()->first();
+
+    //     if (!$page) {
+    //         return abort(404);
+    //     }
+    //     // if (!$page || $page->published === 0) {
+    //     //     return abort(404);
+    //     // }
+
+    //     if (!$page->published) {
+    //         return redirect('/preview/page/'.$page->id);
+    //     }
+
+    //     if (count($page->groups()->get()->toArray()) > 0) {
+    //         $user = Auth::User();
+    //         $userGroups = $user->groups()->get()->pluck('id')->toArray();
+    //         $pageGroups = $post->groups()->get()->pluck('id')->toArray();
+
+    //         if (count(array_intersect($userGroups, $pageGroups)) === 0) {
+    //             return abort(403);
+    //         }
+    //     }
+
+    //     return view('single', compact('page'));
+    // }
 
     public function preview(Page $page)
     {
+
+        if (count($page->groups()->get()->toArray()) > 0) {
+            $user = Auth::User();
+            $userGroups = $user->groups()->get()->pluck('id')->toArray();
+            $pageGroups = $page->groups()->get()->pluck('id')->toArray();
+
+            if (count(array_intersect($userGroups, $pageGroups)) === 0) {
+                return abort(403);
+            }
+        }
         return view('page_preview', compact('page'));
     }
 
     public function getPage($slug = null)
     {
         $page = Page::where('slug', $slug)->get()->first();
+
         if (!$page) {
             return abort(404);
+        }
+
+        $user = Auth::User();
+
+        // post is published and user is authenticated
+        if (!$page->published === 0 && $user) {
+            return redirect('/preview/page/'.$page->id);
+        }
+
+        if (count($page->groups()->get()->toArray()) > 0) {
+            $userGroups = $user->groups()->get()->pluck('id')->toArray();
+            $pageGroups = $post->groups()->get()->pluck('id')->toArray();
+
+            if (count(array_intersect($userGroups, $pageGroups)) === 0) {
+                return abort(403);
+            }
         }
         return view('page', compact('page'));
     }
