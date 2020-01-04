@@ -175,6 +175,10 @@ class PostController extends Controller
         }
 
         if (count($post->groups()->get()->toArray()) > 0) {
+            if (!$user) {
+                return abort(403);
+            }
+            
             $userGroups = $user->groups()->get()->pluck('id')->toArray();
             $postGroups = $post->groups()->get()->pluck('id')->toArray();
             if (count(array_intersect($userGroups, $postGroups)) === 0) {

@@ -184,6 +184,7 @@ class PageController extends Controller
 
     public function getPage($slug = null)
     {
+        
         $page = Page::where('slug', $slug)->get()->first();
 
         if (!$page) {
@@ -198,6 +199,10 @@ class PageController extends Controller
         }
 
         if (count($page->groups()->get()->toArray()) > 0) {
+            if (!$user) {
+                return abort(403);
+            }
+
             $userGroups = $user->groups()->get()->pluck('id')->toArray();
             $pageGroups = $post->groups()->get()->pluck('id')->toArray();
 
