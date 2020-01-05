@@ -1,8 +1,8 @@
-import React from 'react';
-import Menu from './Menu.js';
+import React from "react";
+import Menu from "./Menu.js";
 
 const ColbyCMS = window.colbyCMS;
-import _findIndex from 'lodash/findIndex';
+import _findIndex from "lodash/findIndex";
 
 const Home = () => (
     <div className="container-fluid">
@@ -11,10 +11,10 @@ const Home = () => (
             <main
                 role="main"
                 className="col-md-9 ml-sm-auto col-lg-10 px-4"
-                style={{ paddingTop: '75px' }}
+                style={{ paddingTop: "75px" }}
             >
                 <div>
-                    <h1 style={{ fontSize: '1.4em', paddingBottom: '20px' }}>
+                    <h1 style={{ fontSize: "1.4em", paddingBottom: "20px" }}>
                         Greetings, {ColbyCMS.currentUser.name}
                     </h1>
                 </div>
@@ -73,18 +73,19 @@ const Home = () => (
                         </div>
                     </div>
                 </div>
-                <div className="row" style={{ marginTop: '20px' }}>
+                <div className="row" style={{ marginTop: "20px" }}>
                     {_findIndex(
                         ColbyCMS.currentUser.permissions,
-                        o => o.name === 'admin.add.dashboard.cards'
+                        o => o.name === "admin.add.dashboard.cards"
                     ) >= 0 && (
                         <div className="col-md-4">
                             <div
                                 style={{
-                                    display: 'flex',
-                                    backgroundColor: '#ddd',
-                                    padding: '4em',
-                                    justifyContent: 'center',
+                                    display: "flex",
+                                    backgroundColor: "#ddd",
+                                    padding: "4em",
+                                    justifyContent: "center",
+                                    borderRadius: "4px"
                                 }}
                             >
                                 + ADD

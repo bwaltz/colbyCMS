@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Menu from "./Menu";
-import Axios from "axios";
 import { Link } from "react-router-dom";
 import "./style.scss";
 
@@ -31,7 +29,8 @@ export default class Pages extends Component {
             page: {
                 title: "",
                 body: "",
-                slug: ""
+                slug: "",
+                groups: []
             }
         };
 
@@ -128,6 +127,7 @@ export default class Pages extends Component {
     }
 
     render() {
+        console.log(this.state);
         const customStyles = {
             content: {
                 top: "50%",

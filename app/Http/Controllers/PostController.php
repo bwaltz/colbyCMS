@@ -11,6 +11,8 @@ use Plank\Mediable\Media;
 
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Auth;
+
 class PostController extends Controller
 {
 
@@ -120,7 +122,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-
         $this->validate(
             $request, [
             'title' => 'required',
@@ -130,6 +131,8 @@ class PostController extends Controller
             ]
         );
         $post->update($request->only(['title', 'body', 'slug', 'published']));
+        $post->groups()->sync(array_column($request->groups, 'id'));
+        $post->save();
 
         return new PostResource($post);
     }
@@ -172,6 +175,25 @@ class PostController extends Controller
             return abort(404);
         }
 
+        $user = Auth::User();
+
+        // post is published and user is authenticated
+        if (!$post->published === 0 && $user) {
+            return redirect('/preview/post/'.$post->id);
+        }
+
+        if (count($post->groups()->get()->toArray()) > 0) {
+            if (!$user) {
+                return abort(403);
+            }
+            
+            $userGroups = $user->groups()->get()->pluck('id')->toArray();
+            $postGroups = $post->groups()->get()->pluck('id')->toArray();
+            if (count(array_intersect($userGroups, $postGroups)) === 0) {
+                return abort(403);
+            }
+        }
+
         if ($post->hasMedia('featured_image')) {
             $post->image = $post->firstMedia('featured_image')->basename;
         }
@@ -181,9 +203,21 @@ class PostController extends Controller
 
     public function preview(Post $post)
     {
+        // check user's groups
+        if (count($post->groups()->get()->toArray()) > 0) {
+            $user = Auth::User();
+            $userGroups = $user->groups()->get()->pluck('id')->toArray();
+            $postGroups = $post->groups()->get()->pluck('id')->toArray();
+
+            if (count(array_intersect($userGroups, $postGroups)) === 0) {
+                return abort(403);
+            }
+        }
+
         if ($post->hasMedia('featured_image')) {
             $post->image = $post->firstMedia('featured_image')->basename;
         }
+
         return view('preview', compact('post'));
     }
 

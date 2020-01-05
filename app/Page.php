@@ -27,4 +27,9 @@ class Page extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group', 'group_page', 'page_id', 'group_id');
+    }
 }

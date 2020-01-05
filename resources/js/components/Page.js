@@ -4,6 +4,8 @@ import Menu from "./Menu";
 import { Link } from "react-router-dom";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
+import _xorBy from "lodash/xorBy";
+import _remove from "lodash/remove";
 
 // Require Editor JS files.
 import "froala-editor/js/froala_editor.pkgd.min.js";
@@ -23,6 +25,7 @@ import Modal from "react-modal";
 import ReactDiffViewer from "react-diff-viewer";
 
 import MediaLibrary from "./MediaLibrary";
+import Autosuggest from "react-autosuggest";
 
 export default class Pages extends Component {
     constructor(props) {
@@ -33,7 +36,10 @@ export default class Pages extends Component {
             modalIsOpen: false,
             revisionOpen: 0,
             slugRevealed: false,
-            mediaModalIsOpen: false
+            mediaModalIsOpen: false,
+            suggestions: [],
+            filter: "",
+            groups: []
         };
 
         this.getPage = this.getPage.bind(this);
@@ -41,6 +47,7 @@ export default class Pages extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.updatePage = this.updatePage.bind(this);
         this.handleModelChange = this.handleModelChange.bind(this);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handlePublishedChange = this.handlePublishedChange.bind(this);
         this.setOpenRevision = this.setOpenRevision.bind(this);
         this.revealSlug = this.revealSlug.bind(this);
@@ -49,10 +56,15 @@ export default class Pages extends Component {
         this.openMediaModal = this.openMediaModal.bind(this);
         this.closeMediaModal = this.closeMediaModal.bind(this);
         this.selectFeaturedImage = this.selectFeaturedImage.bind(this);
+
+        this.removeGroup = this.removeGroup.bind(this);
+        this.getSuggestions = this.getSuggestions.bind(this);
+        this.onSuggestionSelect = this.onSuggestionSelect.bind(this);
     }
 
     componentDidMount() {
         this.getPage();
+        this.getGroups();
     }
 
     getPage() {
@@ -144,6 +156,68 @@ export default class Pages extends Component {
         });
     }
 
+    handleTitleChange(event) {
+        this.setState({
+            ...this.state,
+            page: {
+                ...this.state.page,
+                title: event.target.value
+            }
+        });
+    }
+
+    getGroups() {
+        const postId = this.props.match.params.id;
+        axios.get("/api/groups").then(response => {
+            this.setState({
+                groups: response.data.data,
+                loading: false
+            });
+        });
+    }
+
+    getSuggestions(value) {
+        const { groups } = this.state;
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0
+            ? []
+            : _xorBy(this.state.page.groups, groups, "name").filter(group =>
+                  group.name.toLowerCase().includes(inputValue)
+              );
+    }
+
+    onSuggestionSelect(event, { suggestionValue }) {
+        const { groups, page } = this.state;
+        const groupObj = groups.find(g => g.name === suggestionValue);
+        let newGroups = [];
+        if (page.groups) {
+            newGroups = [...this.state.page.groups, groupObj];
+        } else {
+            newGroups.push(groupObj);
+        }
+        this.setState({
+            filter: "",
+            page: {
+                ...this.state.page,
+                groups: newGroups
+            }
+        });
+    }
+
+    removeGroup(id) {
+        const groups = this.state.page.groups;
+        _remove(groups, g => g.id === id);
+
+        this.setState({
+            post: {
+                ...this.state.page,
+                groups
+            }
+        });
+    }
+
     selectFeaturedImage(media) {
         console.log(media);
 
@@ -191,6 +265,7 @@ export default class Pages extends Component {
                                             id="title"
                                             className="form-control"
                                             value={this.state.page.title}
+                                            onChange={this.handleTitleChange}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -276,17 +351,14 @@ export default class Pages extends Component {
                                             )}
                                             {this.state.slugRevealed && (
                                                 <span>
-                                                    page/
                                                     <input
                                                         id="title"
                                                         onChange={
                                                             this.onSlugChange
                                                         }
-                                                        value={this.state.page.slug.substring(
-                                                            5,
+                                                        value={
                                                             this.state.page.slug
-                                                                .length
-                                                        )}
+                                                        }
                                                     />
                                                     <button
                                                         className="btn btn-sm"
@@ -387,6 +459,7 @@ export default class Pages extends Component {
                                                 alt="..."
                                             />
                                         )}
+                                        <i>No featured image</i>
                                     </div>
                                     <div
                                         style={{
@@ -413,6 +486,166 @@ export default class Pages extends Component {
                                         )}
                                     </div>
                                 </div>
+                                {!this.state.loading && (
+                                    <div
+                                        style={{
+                                            boxShadow:
+                                                "0 1px 1px rgba(0,0,0,.04)",
+                                            border: "1px solid #e5e5e5",
+                                            background: "#fff",
+                                            marginBottom: "20px"
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                borderBottom: "1px solid #eee",
+                                                padding: "10px",
+                                                fontSize: " 1.5em",
+                                                display: "flex",
+                                                justifyContent: "space-between"
+                                            }}
+                                        >
+                                            <div>Groups</div>
+                                            <div>
+                                                <span class="badge badge-primary">
+                                                    {
+                                                        this.state.page.groups
+                                                            .length
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div style={{ padding: "10px" }}>
+                                            <Autosuggest
+                                                suggestions={
+                                                    this.state.suggestions
+                                                }
+                                                onSuggestionsFetchRequested={({
+                                                    value
+                                                }) => {
+                                                    this.setState({
+                                                        suggestions: this.getSuggestions(
+                                                            value
+                                                        )
+                                                    });
+                                                }}
+                                                onSuggestionsClearRequested={() => {
+                                                    this.setState({
+                                                        suggestions: []
+                                                    });
+                                                }}
+                                                getSuggestionValue={group =>
+                                                    group.name
+                                                }
+                                                renderSuggestion={group => (
+                                                    <div>{group.name}</div>
+                                                )}
+                                                inputProps={{
+                                                    placeholder: "Group name",
+                                                    value: this.state.filter,
+                                                    onChange: (
+                                                        event,
+                                                        { newValue }
+                                                    ) => {
+                                                        this.setState({
+                                                            filter: newValue
+                                                        });
+                                                    }
+                                                }}
+                                                onSuggestionSelected={
+                                                    this.onSuggestionSelect
+                                                }
+                                            />
+                                        </div>
+                                        <div
+                                            style={{
+                                                padding: "10px"
+                                            }}
+                                        >
+                                            {this.state.page.groups.length >
+                                                0 && (
+                                                <table className="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">
+                                                                Name
+                                                            </th>
+                                                            <th scope="col">
+                                                                Action
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.page.groups.map(
+                                                            (group, i) => {
+                                                                return (
+                                                                    <tr key={i}>
+                                                                        <td>
+                                                                            <Link
+                                                                                to={`/admin/posts/${group.id}`}
+                                                                            >
+                                                                                {
+                                                                                    group.name
+                                                                                }
+                                                                            </Link>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button
+                                                                                className="btn btn-sm btn-danger"
+                                                                                onClick={this.removeGroup.bind(
+                                                                                    null,
+                                                                                    group.id
+                                                                                )}
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Delete"
+                                                                            >
+                                                                                <svg
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="24"
+                                                                                    height="24"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"
+                                                                                    className="feather feather-x"
+                                                                                >
+                                                                                    <line
+                                                                                        x1="18"
+                                                                                        y1="6"
+                                                                                        x2="6"
+                                                                                        y2="18"
+                                                                                    ></line>
+                                                                                    <line
+                                                                                        x1="6"
+                                                                                        y1="6"
+                                                                                        x2="18"
+                                                                                        y2="18"
+                                                                                    ></line>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            )}
+                                            {this.state.page.groups.length ===
+                                                0 && (
+                                                <div>
+                                                    <i>
+                                                        Page not restricted to
+                                                        groups
+                                                    </i>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {!this.state.loading && (

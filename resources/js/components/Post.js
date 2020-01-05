@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Menu from "./Menu";
-// import Axios from 'axios';
 import { Link } from "react-router-dom";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
+import _xorBy from "lodash/xorBy";
+import _remove from "lodash/remove";
 
 // Require Editor JS files.
 import "froala-editor/js/froala_editor.pkgd.min.js";
@@ -26,9 +27,9 @@ import MediaLibrary from "./MediaLibrary";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Autosuggest from "react-autosuggest";
 
 const Laravel = window.Laravel;
-const ColbyCMS = window.colbyCMS;
 
 export default class Posts extends Component {
     constructor(props) {
@@ -39,7 +40,10 @@ export default class Posts extends Component {
             modalIsOpen: false,
             mediaModalIsOpen: false,
             revisionOpen: 0,
-            slugRevealed: false
+            slugRevealed: false,
+            groups: [],
+            suggestions: [],
+            filter: ""
         };
 
         this.getPost = this.getPost.bind(this);
@@ -55,18 +59,21 @@ export default class Posts extends Component {
         this.disableSlug = this.disableSlug.bind(this);
         this.onSlugChange = this.onSlugChange.bind(this);
         this.selectFeaturedImage = this.selectFeaturedImage.bind(this);
+        this.removeGroup = this.removeGroup.bind(this);
+        this.getSuggestions = this.getSuggestions.bind(this);
+        this.onSuggestionSelect = this.onSuggestionSelect.bind(this);
     }
 
     componentDidMount() {
         this.getPost();
+        this.getGroups();
     }
 
     getPost() {
         const postId = this.props.match.params.id;
         axios.get(`/api/posts/${postId}`).then(response => {
             this.setState({
-                post: response.data.data,
-                loading: false
+                post: response.data.data
             });
         });
     }
@@ -155,8 +162,6 @@ export default class Posts extends Component {
     }
 
     selectFeaturedImage(media) {
-        console.log(media);
-
         axios
             .post(`/api/post/attachMedia/${this.state.post.id}`, {
                 file: media.id
@@ -167,6 +172,58 @@ export default class Posts extends Component {
                 });
                 this.getPost();
             });
+    }
+
+    getGroups() {
+        const postId = this.props.match.params.id;
+        axios.get("/api/groups").then(response => {
+            this.setState({
+                groups: response.data.data,
+                loading: false
+            });
+        });
+    }
+
+    getSuggestions(value) {
+        const { groups } = this.state;
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0
+            ? []
+            : _xorBy(this.state.post.groups, groups, "name").filter(group =>
+                  group.name.toLowerCase().includes(inputValue)
+              );
+    }
+
+    onSuggestionSelect(event, { suggestionValue }) {
+        const { groups, post } = this.state;
+        const groupObj = groups.find(g => g.name === suggestionValue);
+        let newGroups = [];
+        if (post.groups) {
+            newGroups = [...this.state.post.groups, groupObj];
+        } else {
+            newGroups.push(groupObj);
+        }
+        this.setState({
+            filter: "",
+            post: {
+                ...this.state.post,
+                groups: newGroups
+            }
+        });
+    }
+
+    removeGroup(id) {
+        const groups = this.state.post.groups;
+        _remove(groups, g => g.id === id);
+
+        this.setState({
+            post: {
+                ...this.state.post,
+                groups
+            }
+        });
     }
 
     render() {
@@ -441,6 +498,166 @@ export default class Posts extends Component {
                                         )}
                                     </div>
                                 </div>
+                                {!this.state.loading && (
+                                    <div
+                                        style={{
+                                            boxShadow:
+                                                "0 1px 1px rgba(0,0,0,.04)",
+                                            border: "1px solid #e5e5e5",
+                                            background: "#fff",
+                                            marginBottom: "20px"
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                borderBottom: "1px solid #eee",
+                                                padding: "10px",
+                                                fontSize: " 1.5em",
+                                                display: "flex",
+                                                justifyContent: "space-between"
+                                            }}
+                                        >
+                                            <div>Groups</div>
+                                            <div>
+                                                <span class="badge badge-primary">
+                                                    {
+                                                        this.state.post.groups
+                                                            .length
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div style={{ padding: "10px" }}>
+                                            <Autosuggest
+                                                suggestions={
+                                                    this.state.suggestions
+                                                }
+                                                onSuggestionsFetchRequested={({
+                                                    value
+                                                }) => {
+                                                    this.setState({
+                                                        suggestions: this.getSuggestions(
+                                                            value
+                                                        )
+                                                    });
+                                                }}
+                                                onSuggestionsClearRequested={() => {
+                                                    this.setState({
+                                                        suggestions: []
+                                                    });
+                                                }}
+                                                getSuggestionValue={group =>
+                                                    group.name
+                                                }
+                                                renderSuggestion={group => (
+                                                    <div>{group.name}</div>
+                                                )}
+                                                inputProps={{
+                                                    placeholder: "Group name",
+                                                    value: this.state.filter,
+                                                    onChange: (
+                                                        event,
+                                                        { newValue }
+                                                    ) => {
+                                                        this.setState({
+                                                            filter: newValue
+                                                        });
+                                                    }
+                                                }}
+                                                onSuggestionSelected={
+                                                    this.onSuggestionSelect
+                                                }
+                                            />
+                                        </div>
+                                        <div
+                                            style={{
+                                                padding: "10px"
+                                            }}
+                                        >
+                                            {this.state.post.groups.length >
+                                                0 && (
+                                                <table className="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">
+                                                                Name
+                                                            </th>
+                                                            <th scope="col">
+                                                                Action
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.post.groups.map(
+                                                            (group, i) => {
+                                                                return (
+                                                                    <tr key={i}>
+                                                                        <td>
+                                                                            <Link
+                                                                                to={`/admin/posts/${group.id}`}
+                                                                            >
+                                                                                {
+                                                                                    group.name
+                                                                                }
+                                                                            </Link>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button
+                                                                                className="btn btn-sm btn-danger"
+                                                                                onClick={this.removeGroup.bind(
+                                                                                    null,
+                                                                                    group.id
+                                                                                )}
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Delete"
+                                                                            >
+                                                                                <svg
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="24"
+                                                                                    height="24"
+                                                                                    viewBox="0 0 24 24"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    strokeWidth="2"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"
+                                                                                    className="feather feather-x"
+                                                                                >
+                                                                                    <line
+                                                                                        x1="18"
+                                                                                        y1="6"
+                                                                                        x2="6"
+                                                                                        y2="18"
+                                                                                    ></line>
+                                                                                    <line
+                                                                                        x1="6"
+                                                                                        y1="6"
+                                                                                        x2="18"
+                                                                                        y2="18"
+                                                                                    ></line>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            )}
+                                            {this.state.post.groups.length ===
+                                                0 && (
+                                                <div>
+                                                    <i>
+                                                        Post not restricted to
+                                                        groups
+                                                    </i>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {!this.state.loading && (
