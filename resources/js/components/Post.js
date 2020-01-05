@@ -300,16 +300,27 @@ export default class Posts extends Component {
                                     <div style={{ padding: "10px" }}>
                                         <div>
                                             Published:{" "}
-                                            <Toggle
-                                                className="published-toggle"
-                                                defaultChecked={
-                                                    this.state.post.published
-                                                }
-                                                onChange={
-                                                    this.handlePublishedChange
-                                                }
-                                                icons={false}
-                                            />
+                                            {this.state.loading && (
+                                                <span>loading...</span>
+                                            )}
+                                            {!this.state.loading && (
+                                                <Toggle
+                                                    className="published-toggle"
+                                                    defaultChecked={
+                                                        this.state.post
+                                                            .published
+                                                    }
+                                                    onChange={
+                                                        this
+                                                            .handlePublishedChange
+                                                    }
+                                                    icons={false}
+                                                    value={
+                                                        this.state.post
+                                                            .published
+                                                    }
+                                                />
+                                            )}
                                         </div>
                                         <div>
                                             Revisions:{" "}
@@ -414,7 +425,7 @@ export default class Posts extends Component {
                                         style={{
                                             background: "#f5f5f5",
                                             borderTop: "1px solid #ddd",
-                                            padding: "10px"
+                                            padding: "6px"
                                         }}
                                     >
                                         <Link
@@ -432,9 +443,16 @@ export default class Posts extends Component {
                                         >
                                             Save Draft
                                         </button>
-                                        <button className="btn btn-primary">
-                                            Publish
-                                        </button>
+                                        {this.state.post.published && (
+                                            <button className="btn btn-primary">
+                                                Unpublish
+                                            </button>
+                                        )}
+                                        {!this.state.post.published && (
+                                            <button className="btn btn-primary">
+                                                Publish
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                                 <div

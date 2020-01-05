@@ -301,16 +301,27 @@ export default class Pages extends Component {
                                     <div style={{ padding: "10px" }}>
                                         <div>
                                             Published:{" "}
-                                            <Toggle
-                                                className="published-toggle"
-                                                defaultChecked={
-                                                    this.state.page.published
-                                                }
-                                                onChange={
-                                                    this.handlePublishedChange
-                                                }
-                                                icons={false}
-                                            />
+                                            {this.state.loading && (
+                                                <span>loading...</span>
+                                            )}
+                                            {!this.state.loading && (
+                                                <Toggle
+                                                    className="published-toggle"
+                                                    defaultChecked={
+                                                        this.state.page
+                                                            .published
+                                                    }
+                                                    onChange={
+                                                        this
+                                                            .handlePublishedChange
+                                                    }
+                                                    icons={false}
+                                                    value={
+                                                        this.state.page
+                                                            .published
+                                                    }
+                                                />
+                                            )}
                                         </div>
                                         <div>
                                             Revisions:{" "}
@@ -401,7 +412,7 @@ export default class Pages extends Component {
                                         style={{
                                             background: "#f5f5f5",
                                             borderTop: "1px solid #ddd",
-                                            padding: "10px"
+                                            padding: "6px"
                                         }}
                                     >
                                         <Link
@@ -419,9 +430,16 @@ export default class Pages extends Component {
                                         >
                                             Save Draft
                                         </button>
-                                        <button className="btn btn-primary">
-                                            Publish
-                                        </button>
+                                        {this.state.page.published && (
+                                            <button className="btn btn-primary">
+                                                Unpublish
+                                            </button>
+                                        )}
+                                        {!this.state.page.published && (
+                                            <button className="btn btn-primary">
+                                                Publish
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                                 <div

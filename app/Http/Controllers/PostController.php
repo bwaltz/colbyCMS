@@ -177,7 +177,6 @@ class PostController extends Controller
 
     public function single($slug = null)
     {
-        
         $post = Post::where('slug', $slug)->get()->first();
         
         if (!$post) {
@@ -185,17 +184,28 @@ class PostController extends Controller
         }
 
         $user = Auth::User();
+        if ($user) {
+            // page is published and user is authenticated
+            if (!$post->published) {
+                return redirect('/preview/post/'.$post->id);
+            }
+        } else {
+            if (!$post->published) {
+                return abort(404);
+            }
+        }
 
-        // post is published and user is authenticated
-        if (!$post->published === 0 && $user) {
-            return redirect('/preview/post/'.$post->id);
+        // settings
+        $settings = Setting::all();
+        $newSettings = [];
+        foreach ($settings as $setting => $value) {
+            $newSettings[$value->key] = json_decode($value->value);
         }
 
         if (count($post->groups()->get()->toArray()) > 0) {
             if (!$user) {
                 return abort(403);
             }
-            
             $userGroups = $user->groups()->get()->pluck('id')->toArray();
             $postGroups = $post->groups()->get()->pluck('id')->toArray();
             if (count(array_intersect($userGroups, $postGroups)) === 0) {
@@ -207,7 +217,7 @@ class PostController extends Controller
             $post->image = $post->firstMedia('featured_image')->basename;
         }
 
-        return view('single', compact('post'));
+        return view('single', ['post' => $post, 'settings' => $newSettings]);
     }
 
     public function preview(Post $post)

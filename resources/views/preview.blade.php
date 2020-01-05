@@ -1,6 +1,5 @@
 {{-- File: ./resources/views/single.blade.php --}}
-    @extends('layouts.master')
-
+@extends('layouts.frontend-layout')
     @section('content')
     <div class="container">
     <div class="row" style="margin-top: 20px">

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Menu from "./Menu";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./style.scss";
+
 export default class Pages extends Component {
     constructor(props) {
         super(props);
@@ -42,6 +46,10 @@ export default class Pages extends Component {
                 .then(response => {
                     this.getSettings();
                 });
+        });
+        toast("Success!", {
+            className: "green-background",
+            bodyClassName: "grow-font-size"
         });
     }
 
