@@ -82,7 +82,7 @@ const Home = () => (
                             <div
                                 style={{
                                     display: "flex",
-                                    backgroundColor: "#ddd",
+                                    backgroundColor: "#f1f1f1",
                                     padding: "4em",
                                     justifyContent: "center",
                                     borderRadius: "4px"

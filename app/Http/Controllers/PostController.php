@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\User;
+use App\Setting;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\PostResource;
@@ -153,6 +154,13 @@ class PostController extends Controller
     {
         $posts = Post::withMedia()->get();
 
+        // settings
+        $settings = Setting::all();
+        $newSettings = [];
+        foreach ($settings as $setting => $value) {
+            $newSettings[$value->key] = json_decode($value->value);
+        }
+
         foreach($posts as $post){
             if ($post->hasMedia('featured_image')) {
                 $post->image = $post->firstMedia('featured_image')->basename;
@@ -161,7 +169,8 @@ class PostController extends Controller
 
         return view(
             'landing', [
-            'posts' => $posts
+            'posts' => $posts,
+            'settings' => $newSettings,
             ]
         );
     }

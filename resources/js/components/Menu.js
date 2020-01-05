@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import _findIndex from 'lodash/findIndex';
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
+import _findIndex from "lodash/findIndex";
 const ColbyCMS = window.colbyCMS;
 
 const Menu = props => (
@@ -10,9 +10,9 @@ const Menu = props => (
                 <li className="nav-item">
                     <Link
                         className={`nav-link ${
-                            props.location.pathname === '/admin/dashboard'
-                                ? 'active'
-                                : ''
+                            props.location.pathname === "/admin/dashboard"
+                                ? "active"
+                                : ""
                         }`}
                         to="/admin/dashboard"
                     >
@@ -37,14 +37,14 @@ const Menu = props => (
 
                 {_findIndex(
                     ColbyCMS.currentUser.permissions,
-                    o => o.name === 'admin.view.posts'
+                    o => o.name === "admin.view.posts"
                 ) >= 0 && (
                     <li className="nav-item">
                         <Link
                             className={`nav-link ${
-                                props.location.pathname === '/admin/posts'
-                                    ? 'active'
-                                    : ''
+                                props.location.pathname === "/admin/posts"
+                                    ? "active"
+                                    : ""
                             }`}
                             to="/admin/posts"
                         >
@@ -69,14 +69,14 @@ const Menu = props => (
                 )}
                 {_findIndex(
                     ColbyCMS.currentUser.permissions,
-                    o => o.name === 'admin.view.pages'
+                    o => o.name === "admin.view.pages"
                 ) >= 0 && (
                     <li className="nav-item">
                         <Link
                             className={`nav-link ${
-                                props.location.pathname === '/admin/pages'
-                                    ? 'active'
-                                    : ''
+                                props.location.pathname === "/admin/pages"
+                                    ? "active"
+                                    : ""
                             }`}
                             to="/admin/pages"
                         >
@@ -101,15 +101,15 @@ const Menu = props => (
                 )}
                 {_findIndex(
                     ColbyCMS.currentUser.permissions,
-                    o => o.name === 'admin.view.media'
+                    o => o.name === "admin.view.media"
                 ) >= 0 && (
                     <li className="nav-item">
                         <Link
                             className={`nav-link ${
                                 props.location.pathname ===
-                                '/admin/media-library'
-                                    ? 'active'
-                                    : ''
+                                "/admin/media-library"
+                                    ? "active"
+                                    : ""
                             }`}
                             to="/admin/media-library"
                         >
@@ -140,9 +140,43 @@ const Menu = props => (
                         </Link>
                     </li>
                 )}
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link ${
+                            props.location.pathname === "/admin/settings"
+                                ? "active"
+                                : ""
+                        }`}
+                        to="/admin/settings"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="feather feather-sliders"
+                        >
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                        Settings
+                    </Link>
+                </li>
                 {_findIndex(
                     ColbyCMS.currentUser.permissions,
-                    o => o.name === 'admin.view.users'
+                    o => o.name === "admin.view.users"
                 ) >= 0 && (
                     <li className="nav-item">
                         <a className="nav-link" href="#">

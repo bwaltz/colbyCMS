@@ -7,6 +7,7 @@ import Posts from "./Posts";
 import Pages from "./Pages";
 import Post from "./Post";
 import Page from "./Page";
+import Settings from "./Settings";
 import MediaLibrary from "./MediaLibrary";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -28,6 +29,11 @@ export default class App extends Component {
                         />
                         <Route exact path="/admin/posts/:id" component={Post} />
                         <Route exact path="/admin/pages/:id" component={Page} />
+                        <Route
+                            exact
+                            path="/admin/settings"
+                            component={Settings}
+                        />
                     </Switch>
                 </BrowserRouter>
             </>

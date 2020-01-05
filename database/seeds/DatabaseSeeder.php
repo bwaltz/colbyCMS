@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             PostTableSeeder::class,
             GroupsTableSeeder::class,
+            SettingsTableSeeder::class,
             ]
         );
     }

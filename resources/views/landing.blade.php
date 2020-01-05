@@ -3,6 +3,15 @@
 
     @section('content')
     <div class="container">
+    @if($settings['emergency']->isEmergency)
+        <div class="row" style="margin-top: 20px">
+          <div class="col-lg-12">
+            <div class="alert alert-danger" role="alert">
+              {{ $settings['emergency']->emergencyHeader }}
+            </div>
+          </div>
+        </div>
+    @endif
       <div class="row align-items-center">
         <div class="col-md-8 mx-auto">
           <h1 class="my-4 text-center">Welcome to the CMS </h1>
