@@ -8,6 +8,10 @@
         <hr>
         <p>Posted {{ $page->created_at->diffForHumans() }} </p>
         <hr>
+        @if(!empty($post->image))
+        <img class="img-fluid rounded" src=" {!! '/storage/uploads/' . $post->image  !!} " alt="">
+        <hr>
+        @endif
         <p class="lead">{!! $page->body !!}</p>
     </div>
     </div>

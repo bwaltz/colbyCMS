@@ -148,25 +148,42 @@ class PostController extends Controller
 
     public function all()
     {
+        $posts = Post::withMedia()->get();
+
+        foreach($posts as $post){
+            if ($post->hasMedia('featured_image')) {
+                $post->image = $post->firstMedia('featured_image')->basename;
+            }
+        }
+
         return view(
             'landing', [
-            'posts' => Post::latest()->paginate(5)
+            'posts' => $posts
             ]
         );
     }
 
     public function single($slug = null)
     {
+        
         $post = Post::where('slug', $slug)->get()->first();
-
+        
         if (!$post) {
             return abort(404);
         }
+
+        if ($post->hasMedia('featured_image')) {
+            $post->image = $post->firstMedia('featured_image')->basename;
+        }
+
         return view('single', compact('post'));
     }
 
     public function preview(Post $post)
     {
+        if ($post->hasMedia('featured_image')) {
+            $post->image = $post->firstMedia('featured_image')->basename;
+        }
         return view('preview', compact('post'));
     }
 
@@ -178,7 +195,7 @@ class PostController extends Controller
     public function attachMedia(Request $request, Post $post)
     {
         $post->attachMedia($request->file, 'featured_image');
-        return response()->json($post->revisionHistory->toArray());
+        return response()->json(['status' => 'success']);
     }
 
     public function getPostsForUser(User $user)

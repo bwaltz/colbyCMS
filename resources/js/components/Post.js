@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
-import Menu from './Menu';
+import React, { Component } from "react";
+import Menu from "./Menu";
 // import Axios from 'axios';
-import { Link } from 'react-router-dom';
-import Toggle from 'react-toggle';
-import 'react-toggle/style.css';
+import { Link } from "react-router-dom";
+import Toggle from "react-toggle";
+import "react-toggle/style.css";
 
 // Require Editor JS files.
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/js/plugins.pkgd.min.js';
+import "froala-editor/js/froala_editor.pkgd.min.js";
+import "froala-editor/js/plugins.pkgd.min.js";
 
 // Require Editor CSS files.
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import "froala-editor/css/froala_style.min.css";
+import "froala-editor/css/froala_editor.pkgd.min.css";
 
 // Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
-import FroalaEditor from 'react-froala-wysiwyg';
+import "font-awesome/css/font-awesome.css";
+import FroalaEditor from "react-froala-wysiwyg";
 
-import './style.scss';
+import "./style.scss";
 
-import Modal from 'react-modal';
-import ReactDiffViewer from 'react-diff-viewer';
+import Modal from "react-modal";
+import ReactDiffViewer from "react-diff-viewer";
 
-import MediaLibrary from './MediaLibrary';
+import MediaLibrary from "./MediaLibrary";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Laravel = window.Laravel;
 const ColbyCMS = window.colbyCMS;
@@ -36,7 +39,7 @@ export default class Posts extends Component {
             modalIsOpen: false,
             mediaModalIsOpen: false,
             revisionOpen: 0,
-            slugRevealed: false,
+            slugRevealed: false
         };
 
         this.getPost = this.getPost.bind(this);
@@ -63,7 +66,7 @@ export default class Posts extends Component {
         axios.get(`/api/posts/${postId}`).then(response => {
             this.setState({
                 post: response.data.data,
-                loading: false,
+                loading: false
             });
         });
     }
@@ -72,8 +75,8 @@ export default class Posts extends Component {
         this.setState({
             post: {
                 ...this.state.post,
-                body: model,
-            },
+                body: model
+            }
         });
     }
 
@@ -81,8 +84,8 @@ export default class Posts extends Component {
         this.setState({
             post: {
                 ...this.state.post,
-                published: !this.state.post.published,
-            },
+                published: !this.state.post.published
+            }
         });
     }
 
@@ -90,51 +93,55 @@ export default class Posts extends Component {
         axios
             .put(`/api/posts/${this.props.match.params.id}`, this.state.post)
             .then(response => {
+                toast("Success!", {
+                    className: "green-background",
+                    bodyClassName: "grow-font-size"
+                });
                 this.setState({
-                    post: response.data.data,
+                    post: response.data.data
                 });
             });
     }
 
     openModal() {
         this.setState({
-            modalIsOpen: true,
+            modalIsOpen: true
         });
     }
 
     closeModal() {
         this.setState({
-            modalIsOpen: false,
+            modalIsOpen: false
         });
     }
 
     openMediaModal() {
         this.setState({
-            mediaModalIsOpen: true,
+            mediaModalIsOpen: true
         });
     }
 
     closeMediaModal() {
         this.setState({
-            mediaModalIsOpen: false,
+            mediaModalIsOpen: false
         });
     }
 
     setOpenRevision(id) {
         this.setState({
-            revisionOpen: id,
+            revisionOpen: id
         });
     }
 
     revealSlug() {
         this.setState({
-            slugRevealed: true,
+            slugRevealed: true
         });
     }
 
     disableSlug() {
         this.setState({
-            slugRevealed: false,
+            slugRevealed: false
         });
     }
 
@@ -142,8 +149,8 @@ export default class Posts extends Component {
         this.setState({
             post: {
                 ...this.state.post,
-                slug: event.target.value,
-            },
+                slug: event.target.value
+            }
         });
     }
 
@@ -152,9 +159,12 @@ export default class Posts extends Component {
 
         axios
             .post(`/api/post/attachMedia/${this.state.post.id}`, {
-                file: media.id,
+                file: media.id
             })
             .then(response => {
+                this.setState({
+                    mediaModalIsOpen: false
+                });
                 this.getPost();
             });
     }
@@ -162,13 +172,13 @@ export default class Posts extends Component {
     render() {
         const customStyles = {
             content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)',
-            },
+                top: "50%",
+                left: "50%",
+                right: "auto",
+                bottom: "auto",
+                marginRight: "-50%",
+                transform: "translate(-50%, -50%)"
+            }
         };
 
         console.log(this.state);
@@ -180,7 +190,7 @@ export default class Posts extends Component {
                     <main
                         role="main"
                         className="col-md-9 ml-sm-auto col-lg-10 px-4"
-                        style={{ paddingTop: '75px' }}
+                        style={{ paddingTop: "75px" }}
                     >
                         <div className="row">
                             <div className="col-sm-9">
@@ -203,10 +213,10 @@ export default class Posts extends Component {
                                             }
                                             config={{
                                                 imageUploadURL:
-                                                    'http://127.0.0.1:8000/upload',
+                                                    "http://127.0.0.1:8000/upload",
                                                 imageUploadParams: {
-                                                    _token: Laravel.csrfToken,
-                                                },
+                                                    _token: Laravel.csrfToken
+                                                }
                                             }}
                                         />
                                     </div>
@@ -215,24 +225,24 @@ export default class Posts extends Component {
                             <div className="col-sm-3">
                                 <div
                                     style={{
-                                        boxShadow: '0 1px 1px rgba(0,0,0,.04)',
-                                        border: '1px solid #e5e5e5',
-                                        background: '#fff',
-                                        marginBottom: '20px',
+                                        boxShadow: "0 1px 1px rgba(0,0,0,.04)",
+                                        border: "1px solid #e5e5e5",
+                                        background: "#fff",
+                                        marginBottom: "20px"
                                     }}
                                 >
                                     <div
                                         style={{
-                                            borderBottom: '1px solid #eee',
-                                            padding: '10px',
-                                            fontSize: ' 1.5em',
+                                            borderBottom: "1px solid #eee",
+                                            padding: "10px",
+                                            fontSize: " 1.5em"
                                         }}
                                     >
                                         Post Info
                                     </div>
-                                    <div style={{ padding: '10px' }}>
+                                    <div style={{ padding: "10px" }}>
                                         <div>
-                                            Published:{' '}
+                                            Published:{" "}
                                             <Toggle
                                                 className="published-toggle"
                                                 defaultChecked={
@@ -245,7 +255,7 @@ export default class Posts extends Component {
                                             />
                                         </div>
                                         <div>
-                                            Revisions:{' '}
+                                            Revisions:{" "}
                                             {this.state.loading && (
                                                 <span>loading...</span>
                                             )}
@@ -253,10 +263,10 @@ export default class Posts extends Component {
                                                 <a
                                                     onClick={this.openModal}
                                                     style={{
-                                                        cursor: 'pointer',
-                                                        color: '#007bff',
+                                                        cursor: "pointer",
+                                                        color: "#007bff",
                                                         textDecoration:
-                                                            'underline',
+                                                            "underline"
                                                     }}
                                                 >
                                                     {
@@ -267,15 +277,15 @@ export default class Posts extends Component {
                                             )}
                                         </div>
                                         <div>
-                                            Slug:{' '}
+                                            Slug:{" "}
                                             {!this.state.slugRevealed && (
                                                 <a
                                                     onClick={this.revealSlug}
                                                     style={{
-                                                        cursor: 'pointer',
-                                                        color: '#007bff',
+                                                        cursor: "pointer",
+                                                        color: "#007bff",
                                                         textDecoration:
-                                                            'underline',
+                                                            "underline"
                                                     }}
                                                 >
                                                     {this.state.post.slug}
@@ -289,15 +299,13 @@ export default class Posts extends Component {
                                                         onChange={
                                                             this.onSlugChange
                                                         }
-                                                        value={this.state.post.slug.substring(
-                                                            5,
+                                                        value={
                                                             this.state.post.slug
-                                                                .length
-                                                        )}
+                                                        }
                                                     />
                                                     <button
                                                         className="btn btn-sm"
-                                                        style={{ color: 'red' }}
+                                                        style={{ color: "red" }}
                                                         onClick={
                                                             this.disableSlug
                                                         }
@@ -332,13 +340,13 @@ export default class Posts extends Component {
                                             )}
                                         </div>
                                         <div>
-                                            Visibility:{' '}
+                                            Visibility:{" "}
                                             <a
                                                 onClick={() => {}}
                                                 style={{
-                                                    cursor: 'pointer',
-                                                    color: '#007bff',
-                                                    textDecoration: 'underline',
+                                                    cursor: "pointer",
+                                                    color: "#007bff",
+                                                    textDecoration: "underline"
                                                 }}
                                             >
                                                 Public
@@ -347,14 +355,14 @@ export default class Posts extends Component {
                                     </div>
                                     <div
                                         style={{
-                                            background: '#f5f5f5',
-                                            borderTop: '1px solid #ddd',
-                                            padding: '10px',
+                                            background: "#f5f5f5",
+                                            borderTop: "1px solid #ddd",
+                                            padding: "10px"
                                         }}
                                     >
                                         <Link
                                             className="btn btn-link"
-                                            style={{ marginRight: '5px' }}
+                                            style={{ marginRight: "5px" }}
                                             to={`/preview/post/${postId}`}
                                             target="_blank"
                                         >
@@ -362,7 +370,7 @@ export default class Posts extends Component {
                                         </Link>
                                         <button
                                             className="btn btn-secondary"
-                                            style={{ marginRight: '5px' }}
+                                            style={{ marginRight: "5px" }}
                                             onClick={this.updatePost}
                                         >
                                             Save Draft
@@ -374,32 +382,32 @@ export default class Posts extends Component {
                                 </div>
                                 <div
                                     style={{
-                                        boxShadow: '0 1px 1px rgba(0,0,0,.04)',
-                                        border: '1px solid #e5e5e5',
-                                        background: '#fff',
-                                        marginBottom: '20px',
+                                        boxShadow: "0 1px 1px rgba(0,0,0,.04)",
+                                        border: "1px solid #e5e5e5",
+                                        background: "#fff",
+                                        marginBottom: "20px"
                                     }}
                                 >
                                     <div
                                         style={{
-                                            borderBottom: '1px solid #eee',
-                                            padding: '10px',
-                                            fontSize: ' 1.5em',
+                                            borderBottom: "1px solid #eee",
+                                            padding: "10px",
+                                            fontSize: " 1.5em"
                                         }}
                                     >
                                         Featured Image
                                     </div>
-                                    <div style={{ padding: '10px' }}>
+                                    <div style={{ padding: "10px" }}>
                                         {!this.state.post.image && (
                                             <i>No featured image</i>
                                         )}
                                         {this.state.post.image && (
                                             <img
                                                 src={
-                                                    'http://127.0.0.1:8000/storage/uploads/' +
+                                                    "http://127.0.0.1:8000/storage/uploads/" +
                                                     this.state.post.image
                                                         .filename +
-                                                    '.' +
+                                                    "." +
                                                     this.state.post.image
                                                         .extension
                                                 }
@@ -410,9 +418,9 @@ export default class Posts extends Component {
                                     </div>
                                     <div
                                         style={{
-                                            background: '#f5f5f5',
-                                            borderTop: '1px solid #ddd',
-                                            padding: '10px',
+                                            background: "#f5f5f5",
+                                            borderTop: "1px solid #ddd",
+                                            padding: "10px"
                                         }}
                                     >
                                         {!this.state.post.image && (
@@ -448,8 +456,8 @@ export default class Posts extends Component {
 
                                 <div
                                     style={{
-                                        maxHeight: '600px',
-                                        overflow: 'auto',
+                                        maxHeight: "600px",
+                                        overflow: "auto"
                                     }}
                                 >
                                     <div
@@ -457,7 +465,7 @@ export default class Posts extends Component {
                                         id="accordionExample"
                                     >
                                         {this.state.post.revisions
-                                            .filter(obj => obj.key === 'body')
+                                            .filter(obj => obj.key === "body")
                                             .map((revision, i) => {
                                                 return (
                                                     <div className="card">
@@ -466,11 +474,11 @@ export default class Posts extends Component {
                                                                 className="mb-0"
                                                                 style={{
                                                                     display:
-                                                                        'flex',
+                                                                        "flex",
                                                                     alignItems:
-                                                                        'center',
+                                                                        "center",
                                                                     justifyContent:
-                                                                        'space-between',
+                                                                        "space-between"
                                                                 }}
                                                             >
                                                                 <button
@@ -488,13 +496,13 @@ export default class Posts extends Component {
                                                                 <a
                                                                     style={{
                                                                         cursor:
-                                                                            'pointer',
+                                                                            "pointer",
                                                                         fontSize:
-                                                                            '0.4em',
+                                                                            "0.4em",
                                                                         color:
-                                                                            '#007bff',
+                                                                            "#007bff",
                                                                         textDecoration:
-                                                                            'underline',
+                                                                            "underline"
                                                                     }}
                                                                 >
                                                                     Restore
@@ -506,15 +514,15 @@ export default class Posts extends Component {
                                                                 this.state
                                                                     .revisionOpen ===
                                                                 i
-                                                                    ? 'show'
-                                                                    : ''
+                                                                    ? "show"
+                                                                    : ""
                                                             }`}
                                                         >
                                                             <div
                                                                 className="card-body"
                                                                 style={{
                                                                     display:
-                                                                        'flex',
+                                                                        "flex"
                                                                 }}
                                                             >
                                                                 <ReactDiffViewer
@@ -537,9 +545,9 @@ export default class Posts extends Component {
                                 </div>
                                 <div
                                     style={{
-                                        textAlign: 'end',
-                                        marginTop: '1em',
-                                        cursor: 'pointer',
+                                        textAlign: "end",
+                                        marginTop: "1em",
+                                        cursor: "pointer"
                                     }}
                                 >
                                     <button onClick={this.closeModal}>

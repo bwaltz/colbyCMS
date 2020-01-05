@@ -145,6 +145,9 @@ class PageController extends Controller
 
     public function preview(Page $page)
     {
+        if ($page->hasMedia('featured_image')) {
+            $page->image = $page->firstMedia('featured_image')->basename;
+        }
         return view('page_preview', compact('page'));
     }
 
@@ -154,11 +157,20 @@ class PageController extends Controller
         if (!$page) {
             return abort(404);
         }
+        if ($page->hasMedia('featured_image')) {
+            $page->image = $page->firstMedia('featured_image')->basename;
+        }
         return view('page', compact('page'));
     }
 
     public function getRevisions(Page $page)
     {
         return response()->json($page->revisionHistory->toArray());
+    }
+
+    public function attachMedia(Request $request, Page $page)
+    {
+        $page->attachMedia($request->file, 'featured_image');
+        return response()->json(['status' => 'success']);
     }
 }

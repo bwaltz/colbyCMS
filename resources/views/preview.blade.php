@@ -9,8 +9,10 @@
           <hr>
           <p>Posted {{ $post->created_at->diffForHumans() }} </p>
           <hr>
-          <img class="img-fluid rounded" src=" {!! !empty($post->image) ? '/uploads/posts/' . $post->image :  'http://placehold.it/750x300' !!} " alt="">
-          <hr>
+          @if(!empty($post->image))
+            <img class="img-fluid rounded" src=" {!! '/storage/uploads/' . $post->image  !!} " alt="">
+            <hr>
+          @endif
           <p class="lead">{!! $post->body !!}</p>
         </div>
       </div>

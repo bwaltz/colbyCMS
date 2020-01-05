@@ -9,6 +9,10 @@
           <hr>
           <p>Posted {{ $page->created_at->diffForHumans() }} </p>
           <hr>
+          @if(!empty($post->image))
+          <img class="img-fluid rounded" src=" {!! '/storage/uploads/' . $post->image  !!} " alt="">
+          <hr>
+          @endif
           <div class="fr-view">{!! $page->body !!}</div>
         </div>
         <div class="col-md-4">

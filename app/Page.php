@@ -27,9 +27,4 @@ class Page extends Model
     {
         return $this->belongsTo('App\User');
     }
-
-    public function media()
-    {
-        return $this->morphMany('App\Media', 'mediaable');
-    }
 }

@@ -24,6 +24,7 @@ class PageResource extends JsonResource
             'updated_at' => (string) $this->updated_at,
             'revisions' => $this->revisionHistory,
             'user' => $this->user,
+            'image' => $this->firstMedia('featured_image'),
         ];
     }
 }
