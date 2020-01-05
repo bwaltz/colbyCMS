@@ -14,7 +14,7 @@ class SettingsTableSeeder extends Seeder
     {
         $settingEmergency = new Setting;
         $settingEmergency->key = 'emergency';
-        $settingEmergency->value = json_encode(['isEmergency' => true, 'emergencyHeader' => 'This is just a test']);
+        $settingEmergency->value = json_encode(['isEmergency' => false, 'emergencyHeader' => 'This is just a test']);
         $settingEmergency->save();
 
     }

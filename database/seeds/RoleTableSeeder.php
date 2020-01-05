@@ -18,6 +18,7 @@ class RoleTableSeeder extends Seeder
         "admin.delete.other.posts",
         "admin.delete.posts", // <--fix this
         "admin.create.posts",
+        "admin.view.settings",
         "admin.duplicate.posts",
         "admin.publish.posts",
         "admin.archive.posts",
@@ -115,7 +116,8 @@ class RoleTableSeeder extends Seeder
             "student.create.comment",
             "student.edit.comment",
             "student.view.alumni.posts",
-            "student.view.alumni.pages"]
+            "student.view.alumni.pages",
+            "admin.view.settings"]
         );
         
         $roleEditor->givePermissionTo(
