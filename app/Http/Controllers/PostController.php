@@ -152,7 +152,7 @@ class PostController extends Controller
 
     public function all()
     {
-        $posts = Post::withMedia()->get();
+        $posts = Post::withMedia()->where('published', true)->get();
 
         // settings
         $settings = Setting::all();
@@ -168,7 +168,7 @@ class PostController extends Controller
         }
 
         return view(
-            'landing', [
+            'posts', [
             'posts' => $posts,
             'settings' => $newSettings,
             ]

@@ -32,6 +32,9 @@
                          <a class="nav-link" href="{{ url('/home') }}">Home</a>
                     </li>
                     <li class="nav-item">
+                         <a class="nav-link" href="{{ route('posts') }}">Posts</a>
+                    </li>
+                    <li class="nav-item">
                          <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                     </li>
                     <li class="nav-item">
@@ -45,6 +48,9 @@
                       </form>
                      </li>
                      @else
+                     <li class="nav-item">
+                         <a class="nav-link" href="{{ route('posts') }}">Posts</a>
+                    </li>
                      <li class="nav-item">
                          <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                     </li>
