@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use \Venturecraft\Revisionable\RevisionableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Plank\Mediable\Mediable;
+use Lecturize\Taxonomies\Traits\HasTaxonomies;
 
 class Post extends Model
 {
     use RevisionableTrait;
     use SoftDeletes;
     use Mediable;
+    use HasTaxonomies;
     
 
     protected $revisionCreationsEnabled = true;

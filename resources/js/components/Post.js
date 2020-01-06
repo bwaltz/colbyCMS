@@ -29,6 +29,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Autosuggest from "react-autosuggest";
 
+import Categories from "./editComponents/Categories";
+
 const Laravel = window.Laravel;
 
 export default class Posts extends Component {
@@ -240,6 +242,18 @@ export default class Posts extends Component {
 
         console.log(this.state);
         const postId = this.props.match.params.id;
+
+        const nodes = [
+            {
+                value: "academics",
+                label: "Academics",
+                children: [
+                    { value: "english", label: "English" },
+                    { value: "biology", label: "Biology" }
+                ]
+            }
+        ];
+
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -658,6 +672,7 @@ export default class Posts extends Component {
                                         </div>
                                     </div>
                                 )}
+                                {!this.state.loading && <Categories />}
                             </div>
                         </div>
                         {!this.state.loading && (
