@@ -168,6 +168,7 @@ return [
         Venturecraft\Revisionable\RevisionableServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Lavary\Menu\ServiceProvider::class,
+        Lecturize\Taxonomies\TaxonomiesServiceProvider::class,
 
         /*
          * Application Service Providers...

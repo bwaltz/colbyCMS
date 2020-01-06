@@ -55,6 +55,9 @@ class RoleTableSeeder extends Seeder
         "student.view.alumni.posts",
         "student.view.alumni.pages",
         "student.delete.own.posts",
+        "admin.view.taxonomy",
+        "admin.add.taxonomy.term",
+        "admin.delete.taxonomy.term"
     ];
 
     /**
@@ -117,7 +120,10 @@ class RoleTableSeeder extends Seeder
             "student.edit.comment",
             "student.view.alumni.posts",
             "student.view.alumni.pages",
-            "admin.view.settings"]
+            "admin.view.settings",
+            "admin.view.taxonomy",
+            "admin.add.taxonomy.term",
+            "admin.delete.taxonomy.term"]
         );
         
         $roleEditor->givePermissionTo(
@@ -147,7 +153,10 @@ class RoleTableSeeder extends Seeder
             "student.create.comment",
             "student.edit.comment",
             "student.view.alumni.posts",
-            "student.view.alumni.pages"]
+            "student.view.alumni.pages",
+            "admin.view.taxonomy",
+            "admin.add.taxonomy.term",
+            "admin.delete.taxonomy.term"]
         );
 
         $roleAuthor->givePermissionTo(
@@ -169,7 +178,9 @@ class RoleTableSeeder extends Seeder
             "student.create.comment",
             "student.edit.comment",
             "student.view.alumni.posts",
-            "student.view.alumni.pages"]
+            "student.view.alumni.pages",
+            "admin.view.taxonomy",
+            "admin.add.taxonomy.term"]
         );
 
         $roleStudent->givePermissionTo(

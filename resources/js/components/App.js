@@ -9,6 +9,7 @@ import Post from "./Post";
 import Page from "./Page";
 import Menus from "./Menus";
 import Settings from "./Settings";
+import Taxonomy from "./Taxonomy";
 import MediaLibrary from "./MediaLibrary";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -24,6 +25,11 @@ export default class App extends Component {
                         <Route exact path="/admin/posts" component={Posts} />
                         <Route exact path="/admin/pages" component={Pages} />
                         <Route exact path="/admin/menus" component={Menus} />
+                        <Route
+                            exact
+                            path="/admin/categories"
+                            component={Taxonomy}
+                        />
                         <Route
                             exact
                             path="/admin/media-library"
