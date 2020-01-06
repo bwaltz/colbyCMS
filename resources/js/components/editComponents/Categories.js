@@ -3,6 +3,7 @@ import "../style.scss";
 
 import CheckboxTree from "react-checkbox-tree";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
+import { Link } from "react-router-dom";
 
 export default class Categories extends Component {
     constructor(props) {
@@ -147,6 +148,21 @@ export default class Categories extends Component {
                         }}
                         noCascade
                     />
+                </div>
+                <div
+                    style={{
+                        background: "#f5f5f5",
+                        borderTop: "1px solid #ddd",
+                        padding: "10px"
+                    }}
+                >
+                    <Link
+                        className="btn btn-link"
+                        to={"/admin/categories"}
+                        target="_blank"
+                    >
+                        Add Terms
+                    </Link>
                 </div>
             </div>
         );
