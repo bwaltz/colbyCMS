@@ -25,6 +25,7 @@
       <p class="lead">{!! $post->body !!}</p>
     </div>
     <div class="col-md-4">
+      <div>{!! $postSidebarNav->asUl( ['class' => 'awesome-ul'] ) !!}</div>
       <div style="margin-top: 20px;">
         Colby College<br>
         Mayflower Hill Drive<br>

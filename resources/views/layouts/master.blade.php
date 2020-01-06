@@ -28,15 +28,7 @@
               <ul class="navbar-nav ml-auto">
                  @if (Route::has('login'))
                     @auth
-                    <li class="nav-item">
-                         <a class="nav-link" href="{{ url('/home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                         <a class="nav-link" href="{{ route('posts') }}">Posts</a>
-                    </li>
-                    <li class="nav-item">
-                         <a class="nav-link" href="{{ route('contact') }}">Contact</a>
-                    </li>
+                    @include(config('laravel-menu.views.bootstrap-items'), ['items' => $mainNav->roots()])
                     <li class="nav-item">
                       <a class="nav-link" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
