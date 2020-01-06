@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Setting;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,8 +25,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user();
-
+        $user = Auth::User();
+        if (!$user) {
+            return redirect('/');
+        }
         $roles = $user->getRoleNames()->toArray();
 
         if (in_array('superAdmin', $roles) || in_array('admin', $roles) || in_array('editor', $roles) || in_array('author', $roles)) {

@@ -7284,9 +7284,9 @@
     color: #96a1af; }
   
   a {
-    -webkit-transition: .3s all ease;
+    /* -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
-    transition: .3s all ease;
+    transition: .3s all ease; */
     color: #167ce9; }
     a:hover {
       text-decoration: none;

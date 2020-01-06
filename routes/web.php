@@ -21,7 +21,7 @@ Auth::routes();
 
 // ============================= frontend routes
 Route::get('/', 'HomeController@landing');
-Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts', 'PostController@all')->name('posts');
 Route::get('/post/{slug}', 'PostController@single')->where('slug', '.*');
 Route::get('/preview/post/{post}', 'PostController@preview')->middleware('role:superAdmin|admin|editor|author');
