@@ -83,25 +83,30 @@ const ItemRenderer = props => {
                                     {name}
                                 </div>
                             </div>
-                            <button
-                                className="MuiButtonBase-root MuiIconButton-root"
-                                tabIndex="0"
-                                type="button"
-                                onClick={removeItem.bind(null, id)}
-                            >
-                                <span className="MuiIconButton-label">
-                                    <svg
-                                        className="MuiSvgIcon-root"
-                                        focusable="false"
-                                        viewBox="0 0 24 24"
-                                        aria-hidden="true"
-                                        role="presentation"
-                                    >
-                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                                    </svg>
-                                </span>
-                                <span className="MuiTouchRipple-root"></span>
-                            </button>
+                            {_findIndex(
+                                ColbyCMS.currentUser.permissions,
+                                o => o.name === "admin.delete.taxonomy.term"
+                            ) >= 0 && (
+                                <button
+                                    className="MuiButtonBase-root MuiIconButton-root"
+                                    tabIndex="0"
+                                    type="button"
+                                    onClick={removeItem.bind(null, id)}
+                                >
+                                    <span className="MuiIconButton-label">
+                                        <svg
+                                            className="MuiSvgIcon-root"
+                                            focusable="false"
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                            role="presentation"
+                                        >
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                        </svg>
+                                    </span>
+                                    <span className="MuiTouchRipple-root"></span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -176,16 +181,21 @@ const MySortableTree = props => {
     console.log(newTerm);
     return (
         <>
-            <div
-                style={{
-                    textAlign: "right",
-                    marginBottom: "20px"
-                }}
-            >
-                <button className="btn btn-primary" onClick={openModal}>
-                    Add Term
-                </button>
-            </div>
+            {_findIndex(
+                ColbyCMS.currentUser.permissions,
+                o => o.name === "admin.add.taxonomy.term"
+            ) >= 0 && (
+                <div
+                    style={{
+                        textAlign: "right",
+                        marginBottom: "20px"
+                    }}
+                >
+                    <button className="btn btn-primary" onClick={openModal}>
+                        Add Term
+                    </button>
+                </div>
+            )}
             <Sortly items={items} onChange={handleChange}>
                 {props => <ItemRenderer removeItem={removeTerm} {...props} />}
             </Sortly>
