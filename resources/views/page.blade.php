@@ -1,7 +1,20 @@
 {{-- File: ./resources/views/page.blade.php --}}
-    @extends('layouts.master')
-
+@extends('layouts.frontend-layout')
     @section('content')
+    @if($settings['emergency']->isEmergency)
+      <section style="background-color: red; color: white; padding: 20px 0;">
+        <div class="container">
+          <div class="row" style="margin-top: 20px">
+            <div class="col-lg-12">
+              <div>
+                {{ $settings['emergency']->emergencyHeader }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    @endif
+
     <div class="container">
       <div class="row">
         <div class="col-md-8 mx-auto">

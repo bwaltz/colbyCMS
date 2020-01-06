@@ -1,17 +1,20 @@
 {{-- File: ./resources/views/single.blade.php --}}
-@extends('layouts.master')
-
+@extends('layouts.frontend-layout')
 @section('content')
-<div class="container fr-view">
 @if($settings['emergency']->isEmergency)
-        <div class="row" style="margin-top: 20px">
-          <div class="col-lg-12">
-            <div class="alert alert-danger" role="alert">
-              {{ $settings['emergency']->emergencyHeader }}
+      <section style="background-color: red; color: white; padding: 20px 0;">
+        <div class="container">
+          <div class="row" style="margin-top: 20px">
+            <div class="col-lg-12">
+              <div>
+                {{ $settings['emergency']->emergencyHeader }}
+              </div>
             </div>
           </div>
         </div>
+      </section>
     @endif
+<div class="container fr-view">
   <div class="row">
     <div class="col-md-8 mx-auto">
       <h3 class="mt-4">{{ $post->title }} <span class="lead"> by <a href="#"> {{ $post->user->name }} </a></span> </h3>

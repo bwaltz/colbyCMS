@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Page;
+use App\Setting;
 use Illuminate\Http\Request;
 use App\Http\Resources\PageResource;
 use Illuminate\Support\Facades\Auth;
@@ -111,7 +112,7 @@ class PageController extends Controller
             'published' => 'required',
             ]
         );
-        $page->update($request->only(['title', 'body', 'slug', 'published']));
+        $page->update($request->only(['title', 'body', 'slug', 'published',]));
         $page->groups()->sync(array_column($request->groups, 'id'));
         $page->save();
 
@@ -169,10 +170,22 @@ class PageController extends Controller
         }
         
         $user = Auth::User();
+        if ($user) {
+            // page is published and user is authenticated
+            if (!$page->published) {
+                return redirect('/preview/page/'.$page->id);
+            }
+        } else {
+            if (!$page->published) {
+                return abort(404);
+            }
+        }
 
-        // post is published and user is authenticated
-        if (!$page->published === 0 && $user) {
-            return redirect('/preview/page/'.$page->id);
+        // settings
+        $settings = Setting::all();
+        $newSettings = [];
+        foreach ($settings as $setting => $value) {
+            $newSettings[$value->key] = json_decode($value->value);
         }
 
         if (count($page->groups()->get()->toArray()) > 0) {
@@ -192,7 +205,7 @@ class PageController extends Controller
             $page->image = $page->firstMedia('featured_image')->basename;
         }
         
-        return view('page', compact('page'));
+        return view('page', ['page' => $page, 'settings' => $newSettings]);
     }
 
     public function getRevisions(Page $page)

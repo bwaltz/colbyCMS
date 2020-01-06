@@ -8,22 +8,26 @@
         <meta name="author" content="Neo Ighodaro">
         <title>ColbyCMS</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/flaticon.css">
+        <link rel="stylesheet" href="css/ionicons.min.css">
         <style> 
         body {
-          padding-top: 54px;
+          padding-top: 74px;
         }
         @media (min-width: 992px) {
           body {
-              padding-top: 56px;
+              padding-top: 76px;
           }
         }
         </style>
         @yield('scripts')
       </head>
       <body>
+        <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #002878;">
           <div class="container">
-            <a class="navbar-brand" href="/">ColbyCMS</a>
+            <a class="navbar-brand" href="/"><img style="width: 100px" src="/images/colby.png" /></a>
             <div class="collapse navbar-collapse" id="navbarResponsive">
               <ul class="navbar-nav ml-auto">
                  @if (Route::has('login'))
@@ -58,10 +62,11 @@
             </div>
           </div>
         </nav>
+      </header>
 
-        <div id="app">
+        <main id="app">
             @yield('content')
-        </div>
+      </main>
 
         <footer class="py-5 bg-dark">
           <div class="container">
