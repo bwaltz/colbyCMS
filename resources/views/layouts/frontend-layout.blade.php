@@ -8,9 +8,9 @@
         <meta name="author" content="Neo Ighodaro">
         <title>ColbyCMS</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/flaticon.css">
-        <link rel="stylesheet" href="css/ionicons.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/flaticon.css">
+        <link rel="stylesheet" href="/css/ionicons.min.css">
         <style> 
         body {
           padding-top: 74px;
