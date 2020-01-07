@@ -10,7 +10,7 @@ A Laravel CMS for Colby College.
 4. Generate app key: `php artisan key:generate`
 5. Run migrations and seeds: `php artisan migrate --seed`
 6. Run webpack: `npm run watch`
-7. Serve: `php artisan serve`
+7. Serve: `php artisan serve --port=8080`
 8. Play
 
 \*Note: Please run on `127.0.0.1:8080` for the moment, thanks.
