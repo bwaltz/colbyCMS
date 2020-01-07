@@ -13,6 +13,8 @@ A Laravel CMS for Colby College.
 7. Serve: `php artisan serve`
 8. Play
 
+\*Note: Please run on `127.0.0.1:8080` for the moment, thanks.
+
 ## Notable Links
 
 Admin dashboard - "/admin/dashboard"  
