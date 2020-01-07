@@ -15,5 +15,13 @@ A Laravel CMS for Colby College.
 
 ## Notable Links
 
-Admin dashboard - "/admin/dashboard"
+Admin dashboard - "/admin/dashboard"  
+Admissions - "/admissions"  
+Posts - "/posts"
 
+## Dependencies
+
+[Laravel Menu](https://github.com/lavary/laravel-menu)  
+[Laravel Mediable](https://github.com/plank/laravel-mediable)  
+[Laravel Permission](https://github.com/spatie/laravel-permission)  
+[Revisionable](https://github.com/VentureCraft/revisionable)
