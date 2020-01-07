@@ -85,7 +85,8 @@ const Home = () => (
                                     backgroundColor: "#f1f1f1",
                                     padding: "4em",
                                     justifyContent: "center",
-                                    borderRadius: "4px"
+                                    borderRadius: "4px",
+                                    border: "1px solid #ccc"
                                 }}
                             >
                                 + ADD
