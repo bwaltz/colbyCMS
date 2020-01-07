@@ -28,11 +28,23 @@ Route::get('/preview/post/{post}', 'PostController@preview')->middleware('role:s
 Route::get('/preview/page/{page}', 'PageController@preview')->middleware('role:superAdmin|admin|editor|author');
 Route::post('/upload', 'MediaController@upload');
 
+
+// admissions
+Route::get(
+    '/admissions', function () {
+        return view('admissions.admissions-home');
+    }
+)->name('admissions.home');
+Route::get('/admissions/{slug}', 'PageController@getAdmissionsPage')->where('slug', '^(?!admin).+$');
+Route::get('/preview/admissions/page/{page}', 'PageController@admissionsPreview')->middleware('role:superAdmin|admin|editor|author');
+
+
 Route::get(
     '/contact-us', function () {
         return view('contact');
     }
 )->name('contact');
+
 
 Route::get(
     '{slug}', [

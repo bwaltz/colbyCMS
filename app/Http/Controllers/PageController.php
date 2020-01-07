@@ -194,7 +194,7 @@ class PageController extends Controller
             }
 
             $userGroups = $user->groups()->get()->pluck('id')->toArray();
-            $pageGroups = $post->groups()->get()->pluck('id')->toArray();
+            $pageGroups = $page->groups()->get()->pluck('id')->toArray();
 
             if (count(array_intersect($userGroups, $pageGroups)) === 0) {
                 return abort(403);
@@ -217,5 +217,79 @@ class PageController extends Controller
     {
         $page->attachMedia($request->file, 'featured_image');
         return response()->json(['status' => 'success']);
+    }
+
+    // ================================= Specific Sites
+
+    // admissions
+    public function getAdmissionsPage($slug = null)
+    {
+
+        $page = Page::where('slug', 'admissions/'.$slug)->get()->first();
+
+        if (!$page) {
+            return abort(404);
+        }
+        
+        $user = Auth::User();
+        if ($user) {
+            // page is published and user is authenticated
+            if (!$page->published) {
+                return redirect('/preview/admissions/page/'.$page->id);
+            }
+        } else {
+            if (!$page->published) {
+                return abort(404);
+            }
+        }
+
+        // settings
+        $settings = Setting::all();
+        $newSettings = [];
+        foreach ($settings as $setting => $value) {
+            $newSettings[$value->key] = json_decode($value->value);
+        }
+
+        if (count($page->groups()->get()->toArray()) > 0) {
+            if (!$user) {
+                return abort(403);
+            }
+
+            $userGroups = $user->groups()->get()->pluck('id')->toArray();
+            $pageGroups = $page->groups()->get()->pluck('id')->toArray();
+
+            if (count(array_intersect($userGroups, $pageGroups)) === 0) {
+                return abort(403);
+            }
+        }
+     
+        if ($page->hasMedia('featured_image')) {
+            $page->image = $page->firstMedia('featured_image')->basename;
+        }
+
+        
+        return view('admissions.admissions-page', ['page' => $page, 'settings' => $newSettings]);
+    }
+
+    public function admissionsPreview(Page $page)
+    {
+        
+        if (count($page->groups()->get()->toArray()) > 0) {
+            $user = Auth::User();
+            $userGroups = $user->groups()->get()->pluck('id')->toArray();
+            $pageGroups = $page->groups()->get()->pluck('id')->toArray();
+
+            if (count(array_intersect($userGroups, $pageGroups)) === 0) {
+                return abort(403);
+            }
+        }
+
+        if ($page->hasMedia('featured_image')) {
+            $page->image = $page->firstMedia('featured_image')->basename;
+        }
+
+        // dd($page);
+    
+        return view('admissions.admissions-page-preview', compact('page'));
     }
 }

@@ -18,6 +18,9 @@ class GenerateMenus
         \Menu::make(
             'mainNav', function ($menu) {
                 $menu->add('Home', ['route'  => 'home']);
+                $menu->add('Admissions', ['route'  => 'admissions.home']);
+                $menu->admissions->add('Home', ['route'  => 'admissions.home']);
+                $menu->admissions->add('Page 1', ['url'  => 'admissions/page/1']);
                 $menu->add('Posts', ['route'  => 'posts']);
                 $menu->add('Contact', ['route' => 'contact']);
             }
