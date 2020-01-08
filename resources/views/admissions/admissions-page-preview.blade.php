@@ -86,13 +86,19 @@ function myFunction() {
     <div class="col-lg-12"><div class="alert alert-warning" role="alert" style="text-align: center">
   Preview
 </div></div>
-<!-- Header - set the background image for the header in the line below -->
 @if(!empty($page->image))
-<div class="container-fluid px-0">
-    <div class="row">
-    <img class="img-fluid w-100" width="1600" height="985" src="{!! '/storage/uploads/' . $page->image  !!}" alt="">
-</div>
-</div>
+    <div class="container-fluid px-0">
+        <div class="row">
+            <img class="img-fluid w-100" width="1600" height="985" src="{!! '/storage/uploads/' . $page->image  !!}" alt="">
+        </div>
+    </div>
+@else
+    <div class="container-fluid px-0">
+        <div class="row">
+            <img class="img-fluid w-100" width="1600" height="985" src="/images/bg_4.jpg" alt="">
+        </div>
+    </div>
+@endif
 
 <div id="navbar">
   <a  href="javascript:void(0)">Home</a>
@@ -146,7 +152,6 @@ font-size: 1.4em;
         </div>
     </div>
 </div>
-@endif
 @endsection
 
 @section('scripts')

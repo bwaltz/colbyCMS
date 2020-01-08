@@ -26,6 +26,7 @@ import ReactDiffViewer from "react-diff-viewer";
 
 import MediaLibrary from "./MediaLibrary";
 import Autosuggest from "react-autosuggest";
+import Categories from "./editComponents/Categories";
 
 export default class Pages extends Component {
     constructor(props) {
@@ -276,6 +277,14 @@ export default class Pages extends Component {
                                             onModelChange={
                                                 this.handleModelChange
                                             }
+                                            config={{
+                                                imageUploadURL: "/upload",
+                                                imageUploadParams: {
+                                                    _token: Laravel.csrfToken
+                                                },
+                                                htmlRemoveTags: [],
+                                                htmlUntouched: true
+                                            }}
                                         />
                                     </div>
                                 </form>
@@ -357,7 +366,7 @@ export default class Pages extends Component {
                                                             "underline"
                                                     }}
                                                 >
-                                                    {this.state.page.slug}
+                                                    /{this.state.page.slug}
                                                 </a>
                                             )}
                                             {this.state.slugRevealed && (
@@ -477,7 +486,6 @@ export default class Pages extends Component {
                                                 alt="..."
                                             />
                                         )}
-                                        <i>No featured image</i>
                                     </div>
                                     <div
                                         style={{
@@ -664,6 +672,7 @@ export default class Pages extends Component {
                                         </div>
                                     </div>
                                 )}
+                                {!this.state.loading && <Categories />}
                             </div>
                         </div>
                         {!this.state.loading && (

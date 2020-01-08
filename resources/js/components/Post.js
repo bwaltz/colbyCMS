@@ -283,11 +283,12 @@ export default class Posts extends Component {
                                                 this.handleModelChange
                                             }
                                             config={{
-                                                imageUploadURL:
-                                                    "http://127.0.0.1:8000/upload",
+                                                imageUploadURL: "/upload",
                                                 imageUploadParams: {
                                                     _token: Laravel.csrfToken
-                                                }
+                                                },
+                                                htmlRemoveTags: [],
+                                                htmlUntouched: true
                                             }}
                                         />
                                     </div>

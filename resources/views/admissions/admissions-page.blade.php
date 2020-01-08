@@ -1,3 +1,5 @@
+@extends('layouts.admissions-layout')
+
 <?php
     $advisors = [
         [
@@ -20,28 +22,27 @@
     $advisor = $advisors[rand(0, 2)];
     ?>
 
-@extends('layouts.admissions-layout')
+
+
 @section('scripts') 
 <script>
-window.onscroll = function() {myFunction()};
+    window.onscroll = function() {myFunction()};
 
-var navbar = document.getElementById("navbar");
-var sticky = navbar.offsetTop;
+    var navbar = document.getElementById("navbar");
+    var sticky = navbar.offsetTop;
 
-function myFunction() {
-  if (window.pageYOffset >= sticky) {
-    navbar.classList.add("sticky")
-  } else {
-    navbar.classList.remove("sticky");
-  }
-}
-</script>
+    function myFunction() {
+    if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+    } else {
+        navbar.classList.remove("sticky");
+    }
+    }
+    </script>
 @stop
 
 @section('styles') 
 <style>
-
-
 #navbar {
   overflow: hidden;
   background-color: #5a9df1;
@@ -80,18 +81,28 @@ function myFunction() {
 
 </style>
 @stop
+
+
 @section('content')
-<!-- Header - set the background image for the header in the line below -->
+
 @if(!empty($page->image))
-<div class="container-fluid px-0">
-    <div class="row">
-    <img class="img-fluid w-100" width="1600" height="985" src="{!! '/storage/uploads/' . $page->image  !!}" alt="">
-</div>
-</div>
+    <div class="container-fluid px-0">
+        <div class="row">
+            <img class="img-fluid w-100" width="1600" height="985" src="{!! '/storage/uploads/' . $page->image  !!}" alt="">
+        </div>
+    </div>
+@else
+    <div class="container-fluid px-0">
+        <div class="row">
+            <img class="img-fluid w-100" width="1600" height="985" src="/images/bg_4.jpg" alt="">
+        </div>
+    </div>
+@endif
 
 <div id="navbar">
   <a  href="javascript:void(0)">Home</a>
-  <a class="active" href="javascript:void(0)">News</a>
+  <a class="active" href="javascript:void(0)">Financial Aid</a>
+  <a class="" href="javascript:void(0)">Deadlines</a>
   <a href="javascript:void(0)">Contact</a>
 </div>
 
@@ -141,7 +152,7 @@ font-size: 1.4em;
         </div>
     </div>
 </div>
-@endif
+
 @endsection
 
 @section('scripts')

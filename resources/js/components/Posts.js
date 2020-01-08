@@ -401,6 +401,14 @@ export default class Posts extends Component {
                                             onModelChange={
                                                 this.handleModelChange
                                             }
+                                            config={{
+                                                imageUploadURL: "/upload",
+                                                imageUploadParams: {
+                                                    _token: Laravel.csrfToken
+                                                },
+                                                htmlRemoveTags: [],
+                                                htmlUntouched: true
+                                            }}
                                         />
                                     </div>
                                 </form>
