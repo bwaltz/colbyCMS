@@ -62,15 +62,6 @@ class PostController extends Controller
 
         $post = new Post;
 
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $name = str_slug($request->title).'.'.$image->getClientOriginalExtension();
-        //     $destinationPath = public_path('/uploads/posts');
-        //     $imagePath = $destinationPath . "/" . $name;
-        //     $image->move($destinationPath, $name);
-        //     $post->image = $name;
-        // }
-
         $now = Carbon::now();
         $day = $nowFormatted = $now->day;
         $month = $now->month;
@@ -178,32 +169,43 @@ class PostController extends Controller
 
     public function single($slug = null)
     {
+        // get the post where the slug matches
         $post = Post::where('slug', $slug)->get()->first();
         
+        // if no post, return 404
         if (!$post) {
             return abort(404);
         }
 
+        // do we have a logged in user?
         $user = Auth::User();
+
+
         if ($user) {
-            // page is published and user is authenticated
+
+            // post is not published, but user is authenticated...redirect to preview page
             if (!$post->published) {
                 return redirect('/preview/post/'.$post->id);
             }
         } else {
+
+            // post is not published, and no user, return 404
             if (!$post->published) {
                 return abort(404);
             }
         }
 
-        // settings
+        // get site settings
         $settings = Setting::all();
         $newSettings = [];
         foreach ($settings as $setting => $value) {
             $newSettings[$value->key] = json_decode($value->value);
         }
 
+        // get groups for post
         if (count($post->groups()->get()->toArray()) > 0) {
+
+            // if post has groups and user is not authenticated...return 403
             if (!$user) {
                 return abort(403);
             }
@@ -214,6 +216,7 @@ class PostController extends Controller
             }
         }
 
+        // get the featured image for the post
         if ($post->hasMedia('featured_image')) {
             $post->image = $post->firstMedia('featured_image')->basename;
         }

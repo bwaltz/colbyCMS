@@ -1,8 +1,6 @@
 @extends('layouts.admissions-layout')
 
-@section('styles')
-
-@stop
+@section('title', 'Admissions')
 
 @section('content')
 <!-- Header - set the background image for the header in the line below -->

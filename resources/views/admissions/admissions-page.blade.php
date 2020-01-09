@@ -1,5 +1,7 @@
 @extends('layouts.admissions-layout')
 
+@section('title', $page->title)
+
 <?php
     $advisors = [
         [

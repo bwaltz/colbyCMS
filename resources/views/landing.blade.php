@@ -1,5 +1,7 @@
 @extends('layouts.frontend-layout')
 
+@section('title', 'ColbyCMS')
+
 @section('content')
 
 @if($settings['emergency']->isEmergency)
@@ -119,7 +121,7 @@
   <div class="container">
     <div class="row justify-content-center mb-5 pb-3">
       <div class="col-md-7 heading-section  text-center">
-        <h2 class="mb-4">Our Experience Advisor</h2>
+        <h2 class="mb-4">Our Advisors</h2>
       </div>
     </div>
     <div class="row">

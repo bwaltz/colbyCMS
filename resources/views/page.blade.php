@@ -1,6 +1,8 @@
-{{-- File: ./resources/views/page.blade.php --}}
 @extends('layouts.frontend-layout')
-    @section('content')
+
+@section('title', $page->title)
+
+@section('content')
     @if($settings['emergency']->isEmergency)
       <section style="background-color: red; color: white; padding: 20px 0;">
         <div class="container">
@@ -39,8 +41,8 @@
         </div>
       </div>
     </div>
-    @endsection
+@endsection
 
 @section('scripts')
-<link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.6/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+  <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.6/css/froala_style.min.css' rel='stylesheet' type='text/css' />
 @stop

@@ -87,6 +87,8 @@ export default class Posts extends Component {
             published
         });
 
+        console.log(addendedPost);
+
         axios.post("/api/posts", addendedPost).then(response => {
             this.setState({
                 modalIsOpen: false,
@@ -423,7 +425,7 @@ export default class Posts extends Component {
                                 <button
                                     className="btn btn-primary"
                                     style={{ marginRight: "7px" }}
-                                    onClick={this.createPost}
+                                    onClick={this.createPost.bind(null, false)}
                                 >
                                     Save &amp; Close
                                 </button>

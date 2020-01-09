@@ -1,6 +1,8 @@
-{{-- File: ./resources/views/landing.blade.php --}}
 @extends('layouts.frontend-layout')
-    @section('content')
+
+@section('title', 'Posts')
+
+@section('content')
 
     @if($settings['emergency']->isEmergency)
       <section style="background-color: red; color: white; padding: 20px 0;">
@@ -24,36 +26,35 @@
           </div>
         </div>
         <div class="row d-flex">
-
         @if(count($posts))
-          @foreach ($posts as $post)
-          <div class="col-md-4 d-flex ">
-          	<div class="blog-entry align-self-stretch">
-            @if(!empty($post->image))
-              <a href="/post/{{ $post->slug }}" class="block-20" style="background-image: url('{!! '/storage/uploads/' . $post->image !!}');">
-              </a>
-            @else
-            <a href="/post/{{ $post->slug }}" class="block-20" style="background-image: url('{!! 'images/default.png' !!}');">
-              </a>
-            @endif
-              <div class="text p-4 d-block">
-              	<div class="meta mb-3">
-                  <div><a href="#">{{ $post->created_at->diffForHumans() }}</a></div>
-                  <div><a href="#"{{ $post->user->name }}</a></div>
+            @foreach ($posts as $post)
+              <div class="col-md-4 d-flex ">
+                <div class="blog-entry align-self-stretch">
+                @if(!empty($post->image))
+                  <a href="/post/{{ $post->slug }}" class="block-20" style="background-image: url('{!! '/storage/uploads/' . $post->image !!}');">
+                  </a>
+                @else
+                <a href="/post/{{ $post->slug }}" class="block-20" style="background-image: url('{!! 'images/default.png' !!}');">
+                  </a>
+                @endif
+                  <div class="text p-4 d-block">
+                    <div class="meta mb-3">
+                      <div><a href="#">{{ $post->created_at->diffForHumans() }}</a></div>
+                      <div><a href="#"{{ $post->user->name }}</a></div>
+                    </div>
+                    <h3 class="heading mt-3"><a href="/post/{{ $post->slug }}">{{ $post->title }}</a></h3>
+                    <p>{!! str_limit($post->body, $limit = 280, $end = '...') !!}</p>
+                    <a href="/post/{{ $post->slug }}" class="btn btn-default">Read More &rarr;</a>
+                  </div>
                 </div>
-                <h3 class="heading mt-3"><a href="/post/{{ $post->slug }}">{{ $post->title }}</a></h3>
-                <p>{!! str_limit($post->body, $limit = 280, $end = '...') !!}</p>
-                <a href="/post/{{ $post->slug }}" class="btn btn-default">Read More &rarr;</a>
               </div>
-            </div>
-          </div>
-          @endforeach
-          @else
+            @endforeach
+        @else
           <div style="margin-bottom: 3em">No posts</div>
-          @endif
+        @endif
         </div>
       </div>
-</section>
+    </section>
 		
 		<section class="ftco-section-parallax">
       <div class="parallax-img d-flex align-items-center">
@@ -77,4 +78,4 @@
         </div>
       </div>
     </section>
-    @endsection
+@endsection

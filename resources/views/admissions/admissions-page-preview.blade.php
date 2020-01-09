@@ -1,3 +1,7 @@
+@extends('layouts.admissions-layout')
+
+@section('title', $page->title)
+
 <?php
     $advisors = [
         [
@@ -20,7 +24,8 @@
     $advisor = $advisors[rand(0, 2)];
     ?>
 
-@extends('layouts.admissions-layout')
+
+
 @section('scripts') 
 <script>
 window.onscroll = function() {myFunction()};

@@ -1,5 +1,7 @@
-{{-- File: ./resources/views/single.blade.php --}}
 @extends('layouts.frontend-layout')
+
+@section('title', $post->title)
+
 @section('content')
 @if($settings['emergency']->isEmergency)
       <section style="background-color: red; color: white; padding: 20px 0;">
@@ -13,7 +15,7 @@
           </div>
         </div>
       </section>
-    @endif
+@endif
 <div class="container fr-view">
   <div class="row">
     <div class="col-md-8 mx-auto">
@@ -43,5 +45,5 @@
 @endsection
 
 @section('scripts')
-<link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.6/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+  <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.6/css/froala_style.min.css' rel='stylesheet' type='text/css' />
 @stop

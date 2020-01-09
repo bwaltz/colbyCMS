@@ -22,6 +22,8 @@ class GenerateMenus
                 $menu->admissions->add('Home', ['route'  => 'admissions.home']);
                 $menu->admissions->add('Page 1', ['url'  => 'admissions/page/1']);
                 $menu->add('Posts', ['route'  => 'posts']);
+                $menu->add('Form Page', ['url'  => 'form/page']);
+                $menu->add('Test Page 1', ['url'  => 'test/page/1']);
                 $menu->add('Contact', ['route' => 'contact']);
             }
         );
