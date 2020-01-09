@@ -43,7 +43,8 @@ export default class Pages extends Component {
             mediaModalIsOpen: false,
             suggestions: [],
             filter: "",
-            groups: []
+            groups: [],
+            visitEnabled: false
         };
 
         this.getPage = this.getPage.bind(this);
@@ -79,7 +80,8 @@ export default class Pages extends Component {
         axios.get(`/api/pages/${pageId}`).then(response => {
             this.setState({
                 page: response.data.data,
-                loading: false
+                loading: false,
+                visitEnabled: response.data.data.published
             });
         });
     }
@@ -457,7 +459,7 @@ export default class Pages extends Component {
                                                 Public
                                             </a>
                                         </div>
-                                        {this.state.page.published && (
+                                        {this.state.visitEnabled && (
                                             <div>
                                                 <a
                                                     onClick={() =>

@@ -45,7 +45,8 @@ export default class Posts extends Component {
             slugRevealed: false,
             groups: [],
             suggestions: [],
-            filter: ""
+            filter: "",
+            visitEnabled: false
         };
 
         this.getPost = this.getPost.bind(this);
@@ -79,7 +80,8 @@ export default class Posts extends Component {
         axios.get(`/api/posts/${postId}`).then(response => {
             this.setState({
                 post: response.data.data,
-                loading: false
+                loading: false,
+                visitEnabled: response.data.data.published
             });
         });
     }
@@ -387,7 +389,7 @@ export default class Posts extends Component {
                                                             "underline"
                                                     }}
                                                 >
-                                                    {this.state.post.slug}
+                                                    post/{this.state.post.slug}
                                                 </a>
                                             )}
                                             {this.state.slugRevealed && (
@@ -451,7 +453,7 @@ export default class Posts extends Component {
                                                 Public
                                             </a>
                                         </div>
-                                        {this.state.post.published && (
+                                        {this.state.visitEnabled && (
                                             <div>
                                                 <a
                                                     onClick={() =>
