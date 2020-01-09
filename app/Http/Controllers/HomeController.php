@@ -40,8 +40,9 @@ class HomeController extends Controller
     
     public function landing()
     {
-        // settings
+        // get all settings from settings model
         $settings = Setting::all();
+        
         $newSettings = [];
         foreach ($settings as $setting => $value) {
             $newSettings[$value->key] = json_decode($value->value);

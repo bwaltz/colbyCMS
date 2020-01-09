@@ -49,7 +49,9 @@ export default class Pages extends Component {
         });
         toast("Success!", {
             className: "green-background",
-            bodyClassName: "grow-font-size"
+            bodyClassName: "grow-font-size",
+            autoClose: 3000,
+            pauseOnFocusLoss: false
         });
     }
 

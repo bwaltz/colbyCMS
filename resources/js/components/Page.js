@@ -19,6 +19,9 @@ import "froala-editor/css/froala_editor.pkgd.min.css";
 import "font-awesome/css/font-awesome.css";
 import FroalaEditor from "react-froala-wysiwyg";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "./style.scss";
 
 import Modal from "react-modal";
@@ -61,6 +64,9 @@ export default class Pages extends Component {
         this.removeGroup = this.removeGroup.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
         this.onSuggestionSelect = this.onSuggestionSelect.bind(this);
+        this.handlePublishedChangeButton = this.handlePublishedChangeButton.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -96,10 +102,28 @@ export default class Pages extends Component {
         });
     }
 
+    handlePublishedChangeButton() {
+        this.setState(
+            {
+                page: {
+                    ...this.state.page,
+                    published: !this.state.page.published
+                }
+            },
+            this.updatePage
+        );
+    }
+
     updatePage() {
         axios
             .put(`/api/pages/${this.props.match.params.id}`, this.state.page)
             .then(response => {
+                toast("Success!", {
+                    className: "green-background",
+                    bodyClassName: "grow-font-size",
+                    autoClose: 3000,
+                    pauseOnFocusLoss: false
+                });
                 this.setState({
                     page: response.data.data
                 });
@@ -329,6 +353,10 @@ export default class Pages extends Component {
                                                         this.state.page
                                                             .published
                                                     }
+                                                    checked={
+                                                        this.state.page
+                                                            .published
+                                                    }
                                                 />
                                             )}
                                         </div>
@@ -416,6 +444,39 @@ export default class Pages extends Component {
                                                 </span>
                                             )}
                                         </div>
+                                        <div>
+                                            Visibility:{" "}
+                                            <a
+                                                onClick={() => {}}
+                                                style={{
+                                                    cursor: "pointer",
+                                                    color: "#007bff",
+                                                    textDecoration: "underline"
+                                                }}
+                                            >
+                                                Public
+                                            </a>
+                                        </div>
+                                        {this.state.page.published && (
+                                            <div>
+                                                <a
+                                                    onClick={() =>
+                                                        (window.location =
+                                                            "/" +
+                                                            this.state.page
+                                                                .slug)
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        color: "#007bff",
+                                                        textDecoration:
+                                                            "underline"
+                                                    }}
+                                                >
+                                                    Visit
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                     <div
                                         style={{
@@ -437,15 +498,27 @@ export default class Pages extends Component {
                                             style={{ marginRight: "5px" }}
                                             onClick={this.updatePage}
                                         >
-                                            Save Draft
+                                            Save
                                         </button>
                                         {this.state.page.published && (
-                                            <button className="btn btn-primary">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={
+                                                    this
+                                                        .handlePublishedChangeButton
+                                                }
+                                            >
                                                 Unpublish
                                             </button>
                                         )}
                                         {!this.state.page.published && (
-                                            <button className="btn btn-primary">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={
+                                                    this
+                                                        .handlePublishedChangeButton
+                                                }
+                                            >
                                                 Publish
                                             </button>
                                         )}

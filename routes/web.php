@@ -10,20 +10,35 @@
 |
 */
 
-// Route::get(
-//     '/', function () {
-//         return view('welcome');
-//     }
-// );
-
-
 Auth::routes();
 
+// ============================= admin routes
+Route::get(
+    '/admin/logout', function () {
+        Session::flush();
+        Auth::logout();
+        return Redirect::to("/login")
+        ->with('message', array('type' => 'success', 'text' => 'You have successfully logged out'));
+    }
+);
+
+Route::get(
+    'admin', function () {
+        return Redirect::to("/home");
+    }
+);
+Route::get('/admin/{any}', 'AdminController@index')->where('any', '.*')->middleware('role:superAdmin|admin|editor|author');
+
+
+
 // ============================= frontend routes
-Route::get('/', 'HomeController@landing');
+Route::get('/', 'HomeController@landing')->name('homepage');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/posts', 'PostController@all')->name('posts');
+
+// post route
 Route::get('/post/{slug}', 'PostController@single')->where('slug', '.*');
+
 Route::get('/preview/post/{post}', 'PostController@preview')->middleware('role:superAdmin|admin|editor|author');
 Route::get('/preview/page/{page}', 'PageController@preview')->middleware('role:superAdmin|admin|editor|author');
 Route::post('/upload', 'MediaController@upload');
@@ -45,20 +60,10 @@ Route::get(
     }
 )->name('contact');
 
-
+// page route
 Route::get(
     '{slug}', [
     'uses' => 'PageController@getPage'
     ]
 )->where('slug', '^(?!admin).+$');
 
-// ============================= admin routes
-Route::get(
-    '/admin/logout', function () {
-        Session::flush();
-        Auth::logout();
-        return Redirect::to("/login")
-        ->with('message', array('type' => 'success', 'text' => 'You have successfully logged out'));
-    }
-);
-Route::get('/admin/{any}', 'AdminController@index')->where('any', '.*')->middleware('role:superAdmin|admin|editor|author');

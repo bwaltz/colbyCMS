@@ -29,7 +29,7 @@ class GenerateMenus
         
         \Menu::make(
             'postSidebarNav', function ($menu) {
-                $menu->add('Home', ['route'  => 'home', 'class' => 'awesome-li']);
+                $menu->add('Home', ['route'  => 'homepage', 'class' => 'awesome-li']);
                 $menu->add('Admissions', ['url' => 'admissions', 'class' => 'awesome-li']);
                 $menu->admissions->add('Colby Commitment', ['url' => 'admissions/commitment', 'class' => 'awesome-li']);
                 $menu->admissions->add('Deadlines', ['url' => 'admissions/deadlines', 'class' => 'awesome-li']);

@@ -64,6 +64,9 @@ export default class Posts extends Component {
         this.removeGroup = this.removeGroup.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
         this.onSuggestionSelect = this.onSuggestionSelect.bind(this);
+        this.handlePublishedChangeButton = this.handlePublishedChangeButton.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -75,7 +78,8 @@ export default class Posts extends Component {
         const postId = this.props.match.params.id;
         axios.get(`/api/posts/${postId}`).then(response => {
             this.setState({
-                post: response.data.data
+                post: response.data.data,
+                loading: false
             });
         });
     }
@@ -98,17 +102,32 @@ export default class Posts extends Component {
         });
     }
 
+    handlePublishedChangeButton() {
+        this.setState(
+            {
+                post: {
+                    ...this.state.post,
+                    published: !this.state.post.published
+                }
+            },
+            this.updatePost
+        );
+    }
+
     updatePost() {
+        this.setState({
+            loading: true
+        });
         axios
             .put(`/api/posts/${this.props.match.params.id}`, this.state.post)
             .then(response => {
                 toast("Success!", {
                     className: "green-background",
-                    bodyClassName: "grow-font-size"
+                    bodyClassName: "grow-font-size",
+                    autoClose: 3000,
+                    pauseOnFocusLoss: false
                 });
-                this.setState({
-                    post: response.data.data
-                });
+                this.getPost();
             });
     }
 
@@ -243,17 +262,6 @@ export default class Posts extends Component {
         console.log(this.state);
         const postId = this.props.match.params.id;
 
-        const nodes = [
-            {
-                value: "academics",
-                label: "Academics",
-                children: [
-                    { value: "english", label: "English" },
-                    { value: "biology", label: "Biology" }
-                ]
-            }
-        ];
-
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -331,6 +339,14 @@ export default class Posts extends Component {
                                                     }
                                                     icons={false}
                                                     value={
+                                                        this.state.post
+                                                            .published
+                                                    }
+                                                    value={
+                                                        this.state.post
+                                                            .published
+                                                    }
+                                                    checked={
                                                         this.state.post
                                                             .published
                                                     }
@@ -435,6 +451,26 @@ export default class Posts extends Component {
                                                 Public
                                             </a>
                                         </div>
+                                        {this.state.post.published && (
+                                            <div>
+                                                <a
+                                                    onClick={() =>
+                                                        (window.location =
+                                                            "/post/" +
+                                                            this.state.post
+                                                                .slug)
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        color: "#007bff",
+                                                        textDecoration:
+                                                            "underline"
+                                                    }}
+                                                >
+                                                    Visit
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                     <div
                                         style={{
@@ -456,15 +492,27 @@ export default class Posts extends Component {
                                             style={{ marginRight: "5px" }}
                                             onClick={this.updatePost}
                                         >
-                                            Save Draft
+                                            Save
                                         </button>
                                         {this.state.post.published && (
-                                            <button className="btn btn-primary">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={
+                                                    this
+                                                        .handlePublishedChangeButton
+                                                }
+                                            >
                                                 Unpublish
                                             </button>
                                         )}
                                         {!this.state.post.published && (
-                                            <button className="btn btn-primary">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={
+                                                    this
+                                                        .handlePublishedChangeButton
+                                                }
+                                            >
                                                 Publish
                                             </button>
                                         )}

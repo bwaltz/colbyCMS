@@ -1,37 +1,37 @@
-import React, { Component, useMemo, useCallback } from 'react';
-import Menu from './Menu';
+import React, { Component, useMemo, useCallback } from "react";
+import Menu from "./Menu";
 
-import Modal from 'react-modal';
-import { useDropzone } from 'react-dropzone';
+import Modal from "react-modal";
+import { useDropzone } from "react-dropzone";
 
-import './style.scss';
+import "./style.scss";
 
 const baseStyle = {
     flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '70px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "70px",
     borderWidth: 2,
     borderRadius: 2,
-    borderColor: '#eeeeee',
-    borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
-    outline: 'none',
-    transition: 'border .24s ease-in-out',
+    borderColor: "#eeeeee",
+    borderStyle: "dashed",
+    backgroundColor: "#fafafa",
+    color: "#bdbdbd",
+    outline: "none",
+    transition: "border .24s ease-in-out"
 };
 
 const activeStyle = {
-    borderColor: '#2196f3',
+    borderColor: "#2196f3"
 };
 
 const acceptStyle = {
-    borderColor: '#00e676',
+    borderColor: "#00e676"
 };
 
 const rejectStyle = {
-    borderColor: '#ff1744',
+    borderColor: "#ff1744"
 };
 
 function StyledDropzone(props) {
@@ -45,15 +45,15 @@ function StyledDropzone(props) {
         isDragActive,
         isDragAccept,
         isDragReject,
-        acceptedFiles,
-    } = useDropzone({ accept: 'image/*', onDrop });
+        acceptedFiles
+    } = useDropzone({ accept: "image/*", onDrop });
 
     const style = useMemo(
         () => ({
             ...baseStyle,
             ...(isDragActive ? activeStyle : {}),
             ...(isDragAccept ? acceptStyle : {}),
-            ...(isDragReject ? rejectStyle : {}),
+            ...(isDragReject ? rejectStyle : {})
         }),
         [isDragActive, isDragReject]
     );
@@ -70,7 +70,7 @@ function StyledDropzone(props) {
                 <input {...getInputProps()} />
                 <p>Drag 'n' drop some files here, or click to select files</p>
             </div>
-            <aside style={{ marginTop: '10px' }}>
+            <aside style={{ marginTop: "10px" }}>
                 <h4>Files</h4>
                 <ul>{files}</ul>
             </aside>
@@ -87,7 +87,7 @@ export default class MediaLibrary extends Component {
             addModalIsOpen: false,
             previewModalIsOpen: false,
             openMedia: {},
-            newFiles: [],
+            newFiles: []
         };
 
         this.getMedia = this.getMedia.bind(this);
@@ -107,10 +107,10 @@ export default class MediaLibrary extends Component {
     }
 
     getMedia() {
-        axios.get('/api/media').then(response => {
+        axios.get("/api/media").then(response => {
             this.setState({
                 media: response.data,
-                loading: false,
+                loading: false
             });
         });
     }
@@ -118,13 +118,13 @@ export default class MediaLibrary extends Component {
     createMedia() {
         let formData = new FormData();
         this.state.newFiles.forEach((file, i) => {
-            formData.append('files[]', this.state.newFiles[i], file.name);
+            formData.append("files[]", this.state.newFiles[i], file.name);
         });
 
-        axios.post('/api/media', formData).then(response => {
+        axios.post("/api/media", formData).then(response => {
             this.setState({
                 newFiles: [],
-                addModalIsOpen: false,
+                addModalIsOpen: false
             });
             this.getMedia();
         });
@@ -132,43 +132,43 @@ export default class MediaLibrary extends Component {
 
     openAddModal() {
         this.setState({
-            addModalIsOpen: true,
+            addModalIsOpen: true
         });
     }
 
     closeAddModal() {
         this.setState({
-            addModalIsOpen: false,
+            addModalIsOpen: false
         });
     }
 
     openPreviewModal() {
         this.setState({
-            previewModalIsOpen: true,
+            previewModalIsOpen: true
         });
     }
 
     closePreviewModal() {
         this.setState({
-            previewModalIsOpen: false,
+            previewModalIsOpen: false
         });
     }
 
     setOpenMedia(id) {
         this.setState({
-            openMedia: this.state.media.filter(m => m.id === id)[0],
+            openMedia: this.state.media.filter(m => m.id === id)[0]
         });
     }
 
     unsetOpenMedia() {
         this.setState({
-            openMedia: 0,
+            openMedia: 0
         });
     }
 
     setFiles(files) {
         this.setState({
-            newFiles: this.state.newFiles.concat(files),
+            newFiles: this.state.newFiles.concat(files)
         });
     }
 
@@ -179,18 +179,18 @@ export default class MediaLibrary extends Component {
     render() {
         const customStyles = {
             content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)',
-            },
+                top: "50%",
+                left: "50%",
+                right: "auto",
+                bottom: "auto",
+                marginRight: "-50%",
+                transform: "translate(-50%, -50%)"
+            }
         };
 
-        let containerClass = 'col-md-9 ml-sm-auto col-lg-10 px-4';
+        let containerClass = "col-md-9 ml-sm-auto col-lg-10 px-4";
         if (this.props.isPost) {
-            containerClass = 'col-md-12 ml-sm-auto col-lg-12 px-4';
+            containerClass = "col-md-12 ml-sm-auto col-lg-12 px-4";
         }
 
         console.log(this.state);
@@ -202,12 +202,12 @@ export default class MediaLibrary extends Component {
                         role="main"
                         className={containerClass}
                         style={{
-                            paddingTop: !this.props.isPost ? '75px' : '0',
+                            paddingTop: !this.props.isPost ? "75px" : "0"
                         }}
                     >
                         <h1>Media Library</h1>
                         <div
-                            style={{ textAlign: 'right', marginBottom: '20px' }}
+                            style={{ textAlign: "right", marginBottom: "20px" }}
                         >
                             <button
                                 className="btn btn-primary"
@@ -222,9 +222,9 @@ export default class MediaLibrary extends Component {
                         {this.state.media.length > 0 && (
                             <div
                                 style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    flexWrap: "wrap"
                                 }}
                             >
                                 {!this.state.loading &&
@@ -234,16 +234,16 @@ export default class MediaLibrary extends Component {
                                                 className="card"
                                                 style={{
                                                     width:
-                                                        'calc(100% * 1/4 - 20px)',
-                                                    margin: '10px 10px',
+                                                        "calc(100% * 1/4 - 20px)",
+                                                    margin: "10px 10px"
                                                 }}
                                                 key={i}
                                             >
                                                 <img
                                                     src={
-                                                        'http://127.0.0.1:8000/storage/uploads/' +
+                                                        "http://127.0.0.1:8000/storage/uploads/" +
                                                         m.filename +
-                                                        '.' +
+                                                        "." +
                                                         m.extension
                                                     }
                                                     className="card-img-top"
@@ -252,15 +252,15 @@ export default class MediaLibrary extends Component {
                                                 <div
                                                     className="card-body"
                                                     style={{
-                                                        padding: '10px',
-                                                        display: 'flex',
+                                                        padding: "10px",
+                                                        display: "flex",
                                                         justifyContent:
-                                                            'space-between',
+                                                            "space-between"
                                                     }}
                                                 >
                                                     <div>
                                                         {m.filename +
-                                                            '.' +
+                                                            "." +
                                                             m.extension}
                                                     </div>
                                                 </div>
@@ -272,7 +272,7 @@ export default class MediaLibrary extends Component {
                                                                     className="btn btn-primary btn-sm"
                                                                     style={{
                                                                         marginRight:
-                                                                            '5px',
+                                                                            "5px"
                                                                     }}
                                                                     onClick={() => {
                                                                         this.setOpenMedia(
@@ -366,7 +366,7 @@ export default class MediaLibrary extends Component {
                                 files={this.state.newFiles}
                             />
                             <div
-                                style={{ textAlign: 'right' }}
+                                style={{ textAlign: "right" }}
                                 onClick={this.createMedia}
                             >
                                 <button className="btn btn-primary">
@@ -382,52 +382,52 @@ export default class MediaLibrary extends Component {
                             className="media-modal"
                             overlayClassName="post-modal-overlay"
                         >
-                            <div style={{ display: 'flex' }}>
+                            <div style={{ display: "flex" }}>
                                 <div
                                     style={{
-                                        width: '70%',
-                                        backgroundColor: '#656565',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
+                                        width: "70%",
+                                        backgroundColor: "#656565",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center"
                                     }}
                                 >
                                     <div>
                                         <img
                                             src={
-                                                'http://127.0.0.1:8000/storage/uploads/' +
+                                                "http://127.0.0.1:8000/storage/uploads/" +
                                                 this.state.openMedia.filename +
-                                                '.' +
+                                                "." +
                                                 this.state.openMedia.extension
                                             }
-                                            style={{ width: '100%' }}
+                                            style={{ maxWidth: "500px" }}
                                         />
                                     </div>
                                 </div>
                                 <div
                                     style={{
-                                        background: '#f3f3f3',
-                                        width: '30%',
-                                        padding: '10px 20px',
+                                        background: "#f3f3f3",
+                                        width: "30%",
+                                        padding: "10px 20px"
                                     }}
                                 >
                                     <div>
-                                        Filename:{' '}
+                                        Filename:{" "}
                                         {this.state.openMedia.filename +
-                                            '.' +
+                                            "." +
                                             this.state.openMedia.extension}
                                     </div>
                                     <div>
-                                        Mime Type:{' '}
+                                        Mime Type:{" "}
                                         {this.state.openMedia.mime_type}
                                     </div>
                                     <div>Disk: {this.state.openMedia.disk}</div>
                                     <div>
-                                        Upload Directory:{' '}
+                                        Upload Directory:{" "}
                                         {this.state.openMedia.directory}
                                     </div>
                                     <div>
-                                        File Size:{' '}
+                                        File Size:{" "}
                                         {this.state.openMedia.size / 1000} KB
                                     </div>
                                     <hr />
@@ -441,10 +441,10 @@ export default class MediaLibrary extends Component {
                                                     id="title"
                                                     className="form-control form-control-sm"
                                                     value={
-                                                        'http://127.0.0.1:8000/storage/uploads/' +
+                                                        "http://127.0.0.1:8000/storage/uploads/" +
                                                         this.state.openMedia
                                                             .filename +
-                                                        '.' +
+                                                        "." +
                                                         this.state.openMedia
                                                             .extension
                                                     }
@@ -475,8 +475,8 @@ export default class MediaLibrary extends Component {
                             </div>
                             <div
                                 style={{
-                                    textAlign: 'right',
-                                    marginTop: '20px',
+                                    textAlign: "right",
+                                    marginTop: "20px"
                                 }}
                             >
                                 <button

@@ -8,6 +8,26 @@ const Menu = props => (
         <div className="sidebar-sticky">
             <ul className="nav flex-column">
                 <li className="nav-item">
+                    <a href="/" className="nav-link">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="feather feather-home"
+                        >
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Home <span className="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li className="nav-item">
                     <Link
                         className={`nav-link ${
                             props.location.pathname === "/admin/dashboard"
@@ -26,10 +46,12 @@ const Menu = props => (
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="feather feather-home"
+                            className="feather feather-grid"
                         >
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
                         </svg>
                         Dashboard <span className="sr-only">(current)</span>
                     </Link>
@@ -99,36 +121,40 @@ const Menu = props => (
                         </Link>
                     </li>
                 )}
-
-                <li className="nav-item">
-                    <Link
-                        className={`nav-link ${
-                            props.location.pathname === "/admin/menus"
-                                ? "active"
-                                : ""
-                        }`}
-                        to="/admin/menus"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="feather feather-align-right"
+                {_findIndex(
+                    ColbyCMS.currentUser.permissions,
+                    o => o.name === "admin.view.menu"
+                ) >= 0 && (
+                    <li className="nav-item">
+                        <Link
+                            className={`nav-link ${
+                                props.location.pathname === "/admin/menus"
+                                    ? "active"
+                                    : ""
+                            }`}
+                            to="/admin/menus"
                         >
-                            <line x1="21" y1="10" x2="7" y2="10"></line>
-                            <line x1="21" y1="6" x2="3" y2="6"></line>
-                            <line x1="21" y1="14" x2="3" y2="14"></line>
-                            <line x1="21" y1="18" x2="7" y2="18"></line>
-                        </svg>
-                        Menus
-                    </Link>
-                </li>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="feather feather-align-right"
+                            >
+                                <line x1="21" y1="10" x2="7" y2="10"></line>
+                                <line x1="21" y1="6" x2="3" y2="6"></line>
+                                <line x1="21" y1="14" x2="3" y2="14"></line>
+                                <line x1="21" y1="18" x2="7" y2="18"></line>
+                            </svg>
+                            Menus
+                        </Link>
+                    </li>
+                )}
 
                 {_findIndex(
                     ColbyCMS.currentUser.permissions,

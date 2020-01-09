@@ -64,6 +64,7 @@ class PageController extends Controller
         $page->title = $request->title;
         $page->body = $request->body;
         $page->slug = $request->slug;
+        $page->published = $request->published;
         $page->groups()->sync(array_column($request->groups, 'id'));
         $page->save();
         

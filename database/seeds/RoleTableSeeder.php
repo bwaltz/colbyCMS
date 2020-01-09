@@ -57,7 +57,8 @@ class RoleTableSeeder extends Seeder
         "student.delete.own.posts",
         "admin.view.taxonomy",
         "admin.add.taxonomy.term",
-        "admin.delete.taxonomy.term"
+        "admin.delete.taxonomy.term",
+        "admin.view.menu"
     ];
 
     /**
@@ -123,7 +124,8 @@ class RoleTableSeeder extends Seeder
             "admin.view.settings",
             "admin.view.taxonomy",
             "admin.add.taxonomy.term",
-            "admin.delete.taxonomy.term"]
+            "admin.delete.taxonomy.term",
+            "admin.view.menu"]
         );
         
         $roleEditor->givePermissionTo(
