@@ -92,7 +92,7 @@ export default class Posts extends Component {
         axios.post("/api/posts", addendedPost).then(response => {
             this.setState({
                 modalIsOpen: false,
-                page: {
+                post: {
                     title: "",
                     body: "",
                     slug: ""
