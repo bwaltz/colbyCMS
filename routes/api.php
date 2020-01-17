@@ -39,6 +39,7 @@ Route::post('page/attachMedia/{page}', 'PageController@attachMedia');
 
 // groups
 Route::apiResource('groups', 'GroupController');
+Route::middleware('auth:api')->post('syncGroups', 'GroupController@syncGroups');
 
 
 // settings

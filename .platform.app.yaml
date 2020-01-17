@@ -66,3 +66,8 @@ web:
         - index.php
       allow: true
       passthru: "/index.php"
+
+crons:
+  groups:
+      spec: 0 6 * * *
+      cmd: './scripts/syncGroups.sh'

@@ -19,4 +19,10 @@ class GroupController extends Controller
     {
         return GroupResource::collection(Group::latest()->paginate(5));
     }
+    
+    
+    public function syncGroups(Request $request)
+    {
+        dd("foo");
+    }
 }

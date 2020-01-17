@@ -17,6 +17,7 @@ class UserTableSeeder extends Seeder
         $user->email = 'testsuper@test.com';
         $user->password = bcrypt('1234');
         $user->super_admin = 1;
+        $user->api_token = str_random(60);
         $user->save();
         $user->assignRole('superAdmin');
         
@@ -25,6 +26,7 @@ class UserTableSeeder extends Seeder
         $user->email = 'testadmin@test.com';
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
+        $user->api_token = str_random(60);
         $user->save();
         $user->assignRole('admin');
         
@@ -33,6 +35,7 @@ class UserTableSeeder extends Seeder
         $user->email = 'testeditor@test.com';
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
+        $user->api_token = str_random(60);
         $user->save();
         $user->assignRole('editor');
         
@@ -41,6 +44,7 @@ class UserTableSeeder extends Seeder
         $user->email = 'testauthor@test.com';
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
+        $user->api_token = str_random(60);
         $user->save();
         $user->assignRole('author');
         
@@ -57,8 +61,18 @@ class UserTableSeeder extends Seeder
         $user->email = 'testalumni@test.com';
         $user->password = bcrypt('1234');
         $user->super_admin = 0;
+        $user->api_token = str_random(60);
         $user->save();
         $user->assignRole('alumni');
+
+        $user = new User;
+        $user->name = 'scripts';
+        $user->email = 'webmaster@test.com';
+        $user->password = bcrypt('1234');
+        $user->super_admin = 0;
+        $user->api_token = str_random(60);
+        $user->save();
+        $user->assignRole('admin');
 
     }
 }
