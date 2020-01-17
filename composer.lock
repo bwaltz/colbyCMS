@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "690d4f1932283da8e719b9fb69c48359",
+    "content-hash": "5f53b22b69e4240a03d5a293e0a60fb3",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -352,16 +352,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.13",
+            "version": "2.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "834593d5900615639208417760ba6a17299e2497"
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
-                "reference": "834593d5900615639208417760ba6a17299e2497",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
                 "shasum": ""
             },
             "require": {
@@ -405,7 +405,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-30T08:14:25+00:00"
+            "time": "2020-01-05T14:11:20+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1434,6 +1434,89 @@
             "time": "2019-10-11T19:44:01+00:00"
         },
         {
+            "name": "platformsh/config-reader",
+            "version": "2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/platformsh/config-reader-php.git",
+                "reference": "9951de0f1b3a12792113621238bc31a0524d6e52"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/platformsh/config-reader-php/zipball/9951de0f1b3a12792113621238bc31a0524d6e52",
+                "reference": "9951de0f1b3a12792113621238bc31a0524d6e52",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Platformsh\\ConfigReader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@platform.sh"
+                }
+            ],
+            "description": "Small helper to access Platform.sh environment variables",
+            "time": "2019-11-05T19:56:33+00:00"
+        },
+        {
+            "name": "platformsh/laravel-bridge",
+            "version": "2.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/platformsh/laravel-bridge.git",
+                "reference": "1dc7a61ba61ded1ddece3e154169d01c365e3a7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/platformsh/laravel-bridge/zipball/1dc7a61ba61ded1ddece3e154169d01c365e3a7a",
+                "reference": "1dc7a61ba61ded1ddece3e154169d01c365e3a7a",
+                "shasum": ""
+            },
+            "require": {
+                "platformsh/config-reader": "^2.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "platformsh-laravel-env.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@platform.sh"
+                }
+            ],
+            "description": "Bridge library for running Symfony Flex on Platform.sh",
+            "time": "2020-01-13T16:09:02+00:00"
+        },
+        {
             "name": "psr/container",
             "version": "1.0.0",
             "source": {
@@ -1790,27 +1873,27 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "3.4.1",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "fe0573ddb6fd95378eec67e401882564db830312"
+                "reference": "0a063ce206c7545737d19c1beda12003fc66e4e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/fe0573ddb6fd95378eec67e401882564db830312",
-                "reference": "fe0573ddb6fd95378eec67e401882564db830312",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/0a063ce206c7545737d19c1beda12003fc66e4e9",
+                "reference": "0a063ce206c7545737d19c1beda12003fc66e4e9",
                 "shasum": ""
             },
             "require": {
-                "illuminate/auth": "^5.8|^6.0",
-                "illuminate/container": "^5.8|^6.0",
-                "illuminate/contracts": "^5.8|^6.0",
-                "illuminate/database": "^5.8|^6.0",
+                "illuminate/auth": "^5.8|^6.0|^7.0",
+                "illuminate/container": "^5.8|^6.0|^7.0",
+                "illuminate/contracts": "^5.8|^6.0|^7.0",
+                "illuminate/database": "^5.8|^6.0|^7.0",
                 "php": "^7.2"
             },
             "require-dev": {
-                "orchestra/testbench": "^3.8|^4.0",
+                "orchestra/testbench": "^3.8|^4.0|^5.0",
                 "phpunit/phpunit": "^8.0",
                 "predis/predis": "^1.1"
             },
@@ -1854,7 +1937,7 @@
                 "security",
                 "spatie"
             ],
-            "time": "2019-12-28T13:22:00+00:00"
+            "time": "2020-01-17T16:18:51+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3155,20 +3238,20 @@
         },
         {
             "name": "symfony/translation-contracts",
-            "version": "v1.1.7",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "364518c132c95642e530d9b2d217acbc2ccac3e6"
+                "reference": "8cc682ac458d75557203b2f2f14b0b92e1c744ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/364518c132c95642e530d9b2d217acbc2ccac3e6",
-                "reference": "364518c132c95642e530d9b2d217acbc2ccac3e6",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/8cc682ac458d75557203b2f2f14b0b92e1c744ed",
+                "reference": "8cc682ac458d75557203b2f2f14b0b92e1c744ed",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3"
+                "php": "^7.2.5"
             },
             "suggest": {
                 "symfony/translation-implementation": ""
@@ -3176,7 +3259,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -3208,7 +3291,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2019-09-17T11:12:18+00:00"
+            "time": "2019-11-18T17:27:11+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -3566,16 +3649,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5"
+                "reference": "fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
-                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130",
+                "reference": "fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130",
                 "shasum": ""
             },
             "require": {
@@ -3623,7 +3706,7 @@
                 "throwable",
                 "whoops"
             ],
-            "time": "2019-12-29T10:00:00+00:00"
+            "time": "2020-01-15T10:00:00+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -4470,16 +4553,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.19",
+            "version": "7.5.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4263f76a3fc65385e242ef7357b99f3bed36707e"
+                "reference": "9467db479d1b0487c99733bb1e7944d32deded2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4263f76a3fc65385e242ef7357b99f3bed36707e",
-                "reference": "4263f76a3fc65385e242ef7357b99f3bed36707e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9467db479d1b0487c99733bb1e7944d32deded2c",
+                "reference": "9467db479d1b0487c99733bb1e7944d32deded2c",
                 "shasum": ""
             },
             "require": {
@@ -4550,7 +4633,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-01-06T16:53:05+00:00"
+            "time": "2020-01-08T08:45:45+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5213,7 +5296,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1.3"
+        "php": "^7.2"
     },
     "platform-dev": []
 }
