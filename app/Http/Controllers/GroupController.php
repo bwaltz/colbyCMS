@@ -23,6 +23,6 @@ class GroupController extends Controller
     
     public function syncGroups(Request $request)
     {
-        dd("foo");
+        return response()->json(["success" => true]);
     }
 }
