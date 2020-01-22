@@ -1,0 +1,64 @@
+[
+    {
+        "id": 1,
+        "created_at": "2020-01-22 14:28:12",
+        "updated_at": "2020-01-22 14:28:12",
+        "name": "WEBallcolbyGRP",
+        "description": "Lorem ipsum",
+        "deleted_at": null,
+        "_lft": 1,
+        "_rgt": 10,
+        "parent_id": null,
+        "children": [
+            {
+                "id": 2,
+                "created_at": "2020-01-22 14:28:12",
+                "updated_at": "2020-01-22 14:28:12",
+                "name": "WEBalumniGRP",
+                "description": "Lorem ipsum",
+                "deleted_at": null,
+                "_lft": 2,
+                "_rgt": 3,
+                "parent_id": 1,
+                "children": []
+            },
+            {
+                "id": 3,
+                "created_at": "2020-01-22 14:28:12",
+                "updated_at": "2020-01-22 14:28:12",
+                "name": "WEBactiveGRP",
+                "description": "Lorem ipsum",
+                "deleted_at": null,
+                "_lft": 4,
+                "_rgt": 9,
+                "parent_id": 1,
+                "children": [
+                    {
+                        "id": 4,
+                        "created_at": "2020-01-22 14:28:12",
+                        "updated_at": "2020-01-22 14:28:12",
+                        "name": "WEBfacultyGRP",
+                        "description": "Lorem ipsum",
+                        "deleted_at": null,
+                        "_lft": 5,
+                        "_rgt": 8,
+                        "parent_id": 3,
+                        "children": []
+                    },
+                    {
+                        "id": 5,
+                        "created_at": "2020-01-22 14:28:12",
+                        "updated_at": "2020-01-22 14:28:12",
+                        "name": "WEBbiologydeptGRP",
+                        "description": "Lorem ipsum",
+                        "deleted_at": null,
+                        "_lft": 6,
+                        "_rgt": 7,
+                        "parent_id": 4,
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    }
+]

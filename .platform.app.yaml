@@ -70,4 +70,4 @@ web:
 crons:
   groups:
       spec: 0 6 * * *
-      cmd: './scripts/syncGroups.sh'
+      cmd: './scripts/syncGroups.js'

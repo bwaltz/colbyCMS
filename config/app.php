@@ -231,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Menu'      => Lavary\Menu\Facade::class,
+        'Helpers' => App\Helpers\Helpers::class, 
     ],
 
 ];
