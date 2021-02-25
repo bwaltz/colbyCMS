@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,34 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get(
-    '/user', function (Request $request) {
-        return $request->user();
-    }
-);
-
-// posts
-Route::apiResource('posts', 'PostController');
-Route::get('post/revisions/{post}', 'PostController@getRevisions');
-Route::post('post/attachMedia/{post}', 'PostController@attachMedia');
-
-Route::get('postsForUser/{user}', 'PostController@getPostsForUser');
-
-
-// pages
-Route::apiResource('pages', 'PageController');
-Route::get('page/revisions/{page}', 'PageController@getRevisions');
-
-// media
-Route::get('media', 'MediaController@index');
-Route::post('media', 'MediaController@store');
-Route::post('media/{media}', 'MediaController@show');
-Route::post('page/attachMedia/{page}', 'PageController@attachMedia');
-
-// groups
-Route::apiResource('groups', 'GroupController');
-Route::middleware('auth:api')->post('syncGroups', 'GroupController@syncGroups');
-
-
-// settings
-Route::apiResource('settings', 'SettingsController');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
